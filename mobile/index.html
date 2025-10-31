@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EURO247 Mobile</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+  background: #0f1215;
+  color: #fff;
+  padding-bottom: 70px;
+  overflow-x: hidden;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #13161B;
+  border-bottom: 1px solid #2a2f36;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.logo {
+  height: 40px;
+  font-weight: 900;
+  font-size: 20px;
+  color: #0ea5e9;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #171a1f;
+  border: 1px solid #2a2f36;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5edf6;
+  font-size: 14px;
+}
+
+/* Member Bar */
+.member-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #171a1f;
+  border-bottom: 1px solid #2a2f36;
+}
+
+.member-bar button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2f36;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-join {
+  background: linear-gradient(180deg, #1a2b45, #132237);
+  color: #fff;
+}
+
+.btn-login {
+  background: linear-gradient(180deg, #2b1733, #231327);
+  color: #fff;
+}
+
+.btn-vip {
+  background: linear-gradient(180deg, #2d3a1c, #1e2812);
+  color: #fff;
+}
+
+.member-bar button:active {
+  transform: scale(0.97);
+}
+
+/* Hero Section */
+.hero-section {
+  position: fixed;
+  top: 130px;
+  right: -45%;
+  width: 40%;
+  z-index: 50;
+  transition: right 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-section.open {
+  right: 16px;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);
+  border-radius: 12px;
+  padding: 0;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 16px rgba(13, 71, 161, 0.4);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-card:hover {
+  transform: scale(1.02);
+}
+
+.hero-card:active {
+  transform: scale(0.98);
+}
+
+.hero-card > div:first-child {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.hero-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+  padding: 12px 10px;
+}
+
+.hero-name {
+  font-size: 9px;
+  color: #bbb;
+  margin-bottom: 2px;
+}
+
+.hero-title {
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Main Content - Squeeze Effect */
+main {
+  padding: 16px;
+  transition: all 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  margin-top: 60px;
+}
+
+body.hero-active main {
+  padding-left: 8px;
+  padding-right: calc(45% + 16px);
+}
+
+/* Big Banner - Squeeze & Stretch */
+.big-banner {
+  background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);
+  border-radius: 16px;
+  padding: 32px 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(253, 216, 53, 0.4);
+  transition: all 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+body.hero-active .big-banner {
+  min-height: 280px;
+  padding: 24px 12px;
+}
+
+.big-banner h2 {
+  font-size: 24px;
+  font-weight: 900;
+  color: #000;
+  transition: font-size 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .big-banner h2 {
+  font-size: 18px;
+}
+
+.big-banner p {
+  font-size: 14px;
+  margin-top: 12px;
+  opacity: 0.9;
+  transition: font-size 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .big-banner p {
+  font-size: 11px;
+}
+
+.big-banner button {
+  margin-top: 20px;
+  padding: 12px 32px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  transition: all 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .big-banner button {
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+/* Promo Cards - Squeeze & Stretch */
+.promo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+  transition: all 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .promo-grid {
+  gap: 8px;
+}
+
+.promo-card {
+  border-radius: 16px;
+  min-height: 160px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: all 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+body.hero-active .promo-card {
+  min-height: 220px;
+  padding: 16px 10px;
+  border-radius: 12px;
+}
+
+.promo-card:active {
+  transform: scale(0.97);
+}
+
+.promo-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  transition: font-size 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .promo-card h3 {
+  font-size: 14px;
+}
+
+.promo-card p {
+  font-size: 13px;
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+  transition: font-size 2.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+body.hero-active .promo-card p {
+  font-size: 10px;
+}
+
+/* Hero Expanded (전체화면) */
+.hero-expanded {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  display: none;
+  flex-direction: column;
+}
+
+.hero-expanded.active {
+  display: flex;
+}
+
+.hero-video-container {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+.hero-video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hero-action-buttons {
+  position: absolute;
+  bottom: 100px;
+  left: 20px;
+  right: 20px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-action-buttons.show {
+  display: flex;
+}
+
+.hero-action-btn {
+  background: rgba(0,0,0,0.8);
+  border: 2px solid #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-action-btn:active {
+  transform: scale(0.97);
+  background: rgba(255,255,255,0.2);
+}
+
+.hero-action-btn .icon {
+  font-size: 24px;
+}
+
+/* Main Content */
+main {
+  padding: 16px;
+}
+
+/* Big Promo Banner */
+.big-banner {
+  background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);
+  border-radius: 16px;
+  padding: 32px 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(253, 216, 53, 0.4);
+  transition: transform 0.2s;
+}
+
+.big-banner:active {
+  transform: scale(0.98);
+}
+
+.big-banner h2 {
+  font-size: 24px;
+  font-weight: 900;
+  color: #000;
+}
+
+/* Promo Grid */
+.promo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.promo-card {
+  border-radius: 16px;
+  min-height: 140px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-card:active {
+  transform: scale(0.97);
+}
+
+.promo-card.blue {
+  background: linear-gradient(135deg, #42A5F5 0%, #1976D2 100%);
+}
+
+.promo-card.purple {
+  background: linear-gradient(135deg, #AB47BC 0%, #7B1FA2 100%);
+}
+
+.promo-card.green {
+  background: linear-gradient(135deg, #66BB6A 0%, #388E3C 100%);
+}
+
+.promo-card.orange {
+  background: linear-gradient(135deg, #FF7043 0%, #E64A19 100%);
+}
+
+.promo-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+/* Coupon Cards */
+.coupon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.coupon-card {
+  border: 1px solid #2a2f36;
+  background: #171a1f;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.coupon-visual {
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+}
+
+.coupon-info {
+  padding: 12px;
+}
+
+.coupon-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.coupon-status {
+  font-size: 11px;
+  color: #888;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #13161B;
+  border-top: 1px solid #2a2f36;
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0 12px;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  flex: 1;
+  color: #666;
+  transition: color 0.2s;
+  padding: 4px;
+}
+
+.nav-item.active {
+  color: #0ea5e9;
+}
+
+.nav-icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.nav-label {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Full Screen Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #0f1215;
+  z-index: 200;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-header {
+  position: sticky;
+  top: 0;
+  background: #13161B;
+  border-bottom: 1px solid #2a2f36;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+}
+
+.modal-back {
+  font-size: 24px;
+  cursor: pointer;
+  color: #0ea5e9;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-content {
+  flex: 1;
+  padding: 20px 16px;
+}
+
+/* Menu List */
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  background: linear-gradient(90deg, #141a20 0%, #1b2630 100%);
+  border: 1px solid #2a2f36;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-item:active {
+  transform: scale(0.98);
+  border-color: #67e8f9;
+}
+
+.menu-item-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.menu-item-arrow {
+  color: #666;
+}
+
+/* Form Modal */
+.form-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.form-modal.show {
+  display: flex;
+}
+
+.form-box {
+  background: #12161c;
+  border: 1px solid #2a2f36;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.form-close {
+  font-size: 24px;
+  cursor: pointer;
+  color: #888;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #aaa;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px;
+  background: #0f1318;
+  border: 1px solid #2a2f36;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 16px;
+  background: #0ea5e9;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.form-submit:active {
+  transform: scale(0.98);
+}
+
+.link-highlight {
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  color: #0ea5e9;
+  margin: 20px 0;
+  text-decoration: none;
+}
+
+.notice {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.pref-button {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: transparent;
+  border: 2px solid #fbbf24;
+  border-radius: 12px;
+  color: #fbbf24;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 24px 0;
+  cursor: pointer;
+}
+
+.small-text {
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+
+/* ===== Preference (Survey) Wizard ===== */
+.pref-step { display: none; }
+.pref-step.active { display: block; }
+.step-indicator { display:flex; gap:6px; margin-bottom:10px; }
+.step-dot { width:8px; height:8px; border-radius:50%; background:#2a2f36; }
+.step-dot.on { background:#0ea5e9; }
+
+.pref-q { margin-bottom:16px; }
+.pref-q label.q { display:block; font-weight:700; margin-bottom:8px; }
+.pref-option { display:block; background:#0f1318; border:1px solid #2a2f36; color:#fff; border-radius:10px; padding:12px; margin-bottom:10px; }
+.pref-option input { margin-right:8px; }
+.pref-field { width:100%; padding:14px; background:#0f1318; border:1px solid #2a2f36; border-radius:10px; color:#fff; font-size:15px; }
+.step-nav { display:flex; gap:10px; margin-top:8px; }
+.step-nav .ghost { flex:1; padding:14px; background:#1a1d23; border:none; border-radius:10px; color:#fff; font-weight:700; }
+.step-nav .primary { flex:2; padding:14px; background:#0ea5e9; border:none; border-radius:10px; color:#fff; font-weight:800; }
+.help { font-size:12px; color:#888; margin-top:8px; }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="header-inner">
+    <div class="logo">EURO247</div>
+  </div>
+</header>
+
+<!-- Member Bar -->
+<div class="member-bar">
+  <button class="btn-join" onclick="openJoinModal()">가입</button>
+  <button class="btn-login" onclick="openLoginModal()">로그인</button>
+  <button class="btn-vip" onclick="toggleHero()">VIP 호출</button>
+</div>
+
+<!-- Hero Section (우측 슬라이드) -->
+<div class="hero-section" id="heroSection">
+  <div class="hero-card" onclick="expandHero(1)" data-hero="1">
+    <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">👤</div>
+    <div class="hero-info">
+      <div class="hero-name">Jayme Sun (제이미 선)</div>
+      <div class="hero-title">Executive Host 🔷</div>
+    </div>
+  </div>
+  <div class="hero-card" onclick="expandHero(2)" data-hero="2">
+    <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);">👤</div>
+    <div class="hero-info">
+      <div class="hero-name">Tom Woo (탐 우)</div>
+      <div class="hero-title">Mid-level Host 📱</div>
+    </div>
+  </div>
+  <div class="hero-card" onclick="expandHero(3)" data-hero="3">
+    <div style="background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%);">👤</div>
+    <div class="hero-info">
+      <div class="hero-name">Jay Hong (재 홍)</div>
+      <div class="hero-title">Executive Host 📱</div>
+    </div>
+  </div>
+</div>
+
+<!-- Hero Expanded View -->
+<div class="hero-expanded" id="heroExpanded">
+  <button class="hero-close-btn" onclick="closeHeroExpanded()">✕</button>
+  <div class="hero-video-container">
+    <video id="heroVideo" playsinline muted></video>
+  </div>
+  <div class="hero-action-buttons" id="heroActions">
+    <button class="hero-action-btn" onclick="heroAction('vip')">
+      <span class="icon">👑</span>
+      <span>VIP쿠폰 요청</span>
+    </button>
+    <button class="hero-action-btn" onclick="heroAction('grade')">
+      <span class="icon">⭐</span>
+      <span>현재등급과혜택</span>
+    </button>
+    <button class="hero-action-btn" onclick="heroAction('promo')">
+      <span class="icon">🎁</span>
+      <span>프로모션참여</span>
+    </button>
+    <button class="hero-action-btn" onclick="heroAction('partner')">
+      <span class="icon">📞</span>
+      <span>파트너호출</span>
+    </button>
+  </div>
+</div>
+
+<!-- Hero Section (토글) -->
+<div class="hero-section" id="heroSection">
+  <div class="hero-card">
+    <div class="hero-name">Jayme Sun (제이미 선)</div>
+    <div class="hero-title">Executive Host 🔷</div>
+  </div>
+  <div class="hero-card">
+    <div class="hero-name">Tom Woo (탐 우)</div>
+    <div class="hero-title">
+      Mid-level Host 
+      <a href="https://t.me/woo247" style="color: #29A9EA">📱</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="hero-name">Jay Hong (재 홍)</div>
+    <div class="hero-title">
+      Executive Host 
+      <a href="https://t.me/exid333" style="color: #29A9EA">📱</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<main>
+  <!-- Big Banner (빅소켓) - 쿠폰받기 -->
+  <div class="big-banner" onclick="openJoinModal()">
+    <h2>비공식 파트너 프로그램<br>고객 감사 쿠폰</h2>
+    <p style="font-size: 14px; margin-top: 12px; opacity: 0.9;">선호도 체크하고 퀴즈도 풀고 쿠폰 받아가세요</p>
+    <button style="margin-top: 20px; padding: 12px 32px; background: #fff; color: #000; border: none; border-radius: 10px; font-size: 16px; font-weight: 700;">쿠폰받기</button>
+  </div>
+
+  <!-- Promo Cards (스몰4소켓) -->
+  <div class="promo-grid">
+    <div class="promo-card" style="background: linear-gradient(135deg, #FDD835 0%, #F9A825 100%);" onclick="openPromoModal('프로모션')">
+      <h3 style="color: #000;">프로모션</h3>
+      <p style="color: #000; font-size: 12px; opacity: 0.8; margin-top: 8px;">총 2개의 항목 쿠폰</p>
+    </div>
+    <div class="promo-card green" onclick="openPromoModal('30,000 포인트')">
+      <h3>30,000<br>포인트</h3>
+      <p style="font-size: 12px; opacity: 0.9; margin-top: 8px;">최근 충전 보상</p>
+    </div>
+    <div class="promo-card" style="background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);" onclick="openPromoModal('70,000 VIP 포인트')">
+      <h3>70,000 VIP<br>포인트</h3>
+      <p style="font-size: 12px; opacity: 0.9; margin-top: 8px;">VIP 전용 가이드 보상</p>
+    </div>
+    <div class="promo-card cyan" onclick="openPromoModal('100,000 VIP 포인트')">
+      <h3>100,000<br>VIP 포인트</h3>
+      <p style="font-size: 12px; opacity: 0.9; margin-top: 8px;">최근 등급 달성 보상</p>
+    </div>
+  </div>
+</main>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <div class="nav-item active">
+    <div class="nav-icon">🏠</div>
+    <div class="nav-label">홈</div>
+  </div>
+  <div class="nav-item" onclick="openNavModal('프로모션')">
+    <div class="nav-icon">🎁</div>
+    <div class="nav-label">프로모션</div>
+  </div>
+  <div class="nav-item" onclick="openNavModal('파트너서비스')">
+    <div class="nav-icon">🎫</div>
+    <div class="nav-label">파트너</div>
+  </div>
+  <div class="nav-item" onclick="openNavModal('쿠폰')">
+    <div class="nav-icon">💸</div>
+    <div class="nav-label">쿠폰</div>
+  </div>
+</nav>
+
+<!-- Promo Detail Modal -->
+<div class="modal" id="promoModal">
+  <div class="modal-header">
+    <div class="modal-back" onclick="closeModal('promoModal')">←</div>
+    <div class="modal-title" id="promoTitle">프로모션</div>
+  </div>
+  <div class="modal-content">
+    <p style="color: #888">콘텐츠 준비중입니다.</p>
+  </div>
+</div>
+
+<!-- Nav Menu Modal -->
+<div class="modal" id="navModal">
+  <div class="modal-header">
+    <div class="modal-back" onclick="closeModal('navModal')">←</div>
+    <div class="modal-title" id="navTitle">메뉴</div>
+  </div>
+  <div class="modal-content">
+    <div class="menu-list" id="navMenuList"></div>
+  </div>
+</div>
+
+<!-- Join Form (가입창 - 이미지 그대로) -->
+<div class="form-modal" id="joinModal">
+  <div class="form-box" style="background: #2a2e35;">
+    <div class="form-header">
+      <div class="form-title">회원가입</div>
+      <div class="form-close" onclick="closeModal('joinModal')">✕</div>
+    </div>
+    
+    <div class="form-group">
+      <label style="color: #999; font-size: 13px; margin-bottom: 8px;">아이디</label>
+      <input type="text" placeholder="👤 아이디를 입력하세요" style="background: #1a1d23; border: none;">
+    </div>
+
+    <div class="form-group">
+      <label style="color: #999; font-size: 13px; margin-bottom: 8px;">비밀번호</label>
+      <input type="password" placeholder="🔒 비밀번호를 입력하세요" style="background: #1a1d23; border: none;">
+    </div>
+
+    <div class="form-group">
+      <label style="color: #999; font-size: 13px; margin-bottom: 8px;">성함</label>
+      <input type="text" placeholder="🔒 성함을 입력하세요" style="background: #1a1d23; border: none;">
+    </div>
+
+    <div class="form-group">
+      <label style="color: #999; font-size: 13px; margin-bottom: 8px;">연락처</label>
+      <input type="text" placeholder="🔒 연락처를 입력하세요(+은 지역코드를 넣어주세요)" style="background: #1a1d23; border: none;">
+    </div>
+
+    <div style="margin: 15px 0;">
+      <label style="display: flex; align-items: center; gap: 8px; color: #ccc; font-size: 14px;">
+        <input type="checkbox" style="width: 18px; height: 18px;">
+        로그인 정보 기억하기
+      </label>
+    </div>
+
+    <div style="display: flex; gap: 10px;">
+      <button onclick="closeModal('joinModal')" style="flex: 1; padding: 14px; background: #1a1d23; border: none; border-radius: 8px; color: #fff; font-size: 15px; font-weight: 600;">취소</button>
+      <button onclick="showWelcomeModal()" class="form-submit" style="flex: 2;">회원가입</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px; color: #888; font-size: 14px;">
+      이미 계정이 있으신가요? <span style="color: #0ea5e9; cursor: pointer;" onclick="openLoginModal()">로그인</span>
+    </div>
+  </div>
+</div>
+
+<!-- Welcome Modal (축하) -->
+<div class="form-modal" id="welcomeModal">
+  <div class="form-box">
+    <div class="form-header">
+      <div class="form-title">🎉 가입 완료!</div>
+      <div class="form-close" onclick="closeAllModals()">✕</div>
+    </div>
+    <div style="text-align: center; padding: 30px 20px;">
+      <div style="font-size: 20px; font-weight: 700; margin-bottom: 20px; line-height: 1.6;">
+        회원가입을 축하드립니다!
+      </div>
+      <div style="color: #aaa; font-size: 15px; line-height: 1.7; margin-bottom: 30px;">
+        쿠폰을 받으시려면<br>
+        파트너 사이트에서 추가 가입이 필요합니다
+      </div>
+      
+      <div style="background: #1a1f2e; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+        <a href="https://www.HCASINO2.COM" target="_blank" style="display: block; font-size: 18px; font-weight: 700; color: #0ea5e9; margin-bottom: 15px; text-decoration: none;">
+          HCASINO2.COM
+        </a>
+        <div style="color: #fbbf24; font-size: 16px; font-weight: 700; margin-bottom: 10px;">
+          추천코드: MBC
+        </div>
+        <div style="color: #aaa; font-size: 13px; line-height: 1.6;">
+          위 주소에서 가입하신 후<br>
+          선호도 체크를 완료하시면<br>
+          쿠폰이 지급됩니다
+        </div>
+      </div>
+    </div>
+    <button class="form-submit" onclick="showPrefModal()">가입 완료했습니다! 선호도 체크하기</button>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="form-modal" id="loginModal">
+  <div class="form-box">
+    <div class="form-header">
+      <div class="form-title">로그인</div>
+      <div class="form-close" onclick="closeModal('loginModal')">✕</div>
+    </div>
+    <div class="form-group">
+      <input type="text" placeholder="아이디">
+    </div>
+    <div class="form-group">
+      <input type="password" placeholder="비밀번호">
+    </div>
+    <button class="form-submit">로그인</button>
+  </div>
+</div>
+
+<!-- Join Done Modal -->
+<div class="form-modal" id="joinDoneModal">
+  <div class="form-box">
+    <div class="form-header">
+      <div class="form-title">가입 완료</div>
+      <div class="form-close" onclick="closeModal('joinDoneModal')">✕</div>
+    </div>
+    <a href="https://www.HCASINO2.COM" target="_blank" class="link-highlight">
+      www.ev-62.com 에서
+    </a>
+    <div class="notice">가입완료하신분만! 1분선호도체크하고</div>
+    <button class="pref-button" onclick="showPrefModal()">선호도 쿠폰받기</button>
+    <div class="small-text">*가입하신 후 선호도 쿠폰받기 순서로 하셔야 지급됩니다..</div>
+  </div>
+</div>
+
+<!-- Preference Modal -->
+<div class="form-modal" id="prefModal">
+  <div class="form-box">
+    <div class="form-header">
+      <div class="form-title">플로우식 설문</div>
+      <div class="form-close" onclick="closeModal('prefModal')">✕</div>
+    </div>
+    
+    <div class="form-group">
+      <label style="margin-bottom: 15px;">
+        플레이시 원하시는 것은? 가입 회원성에 플레이 등급을 알고 선호하시는 것은? 본 항목과 그 구성의 중 어떤것이 맘에 들어 선택하시나요? 선택지로부터 대략 선호하는 것을 알 수 있을 것 같은요! 회원님이 플로우 추가 제휴안내 입니다
+      </label>
+      <div style="margin-top: 10px;">
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="amount" style="margin-right: 8px;"> 1-5천
+        </label>
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="amount" style="margin-right: 8px;"> 1-1만
+        </label>
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="amount" style="margin-right: 8px;"> 1-2만
+        </label>
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="amount" style="margin-right: 8px;"> 1-3만
+        </label>
+      </div>
+    </div>
+
+    <div style="margin: 20px 0; padding: 15px; background: #1a1f2e; border-radius: 8px; font-size: 13px; line-height: 1.7; color: #aaa;">
+      당사 VIP파트너도스케치 플렛폼 네토 빈번 함유하신 플렛폼 전송주시면 당근이 매장갈드립니다!
+    </div>
+
+    <div class="form-group">
+      <label style="margin-bottom: 10px;">
+        비로 방문으로 VVIP이용권 플렛폼 보충해드립니다 간헐성 이용하실수있습니다
+      </label>
+      <div style="margin-top: 10px;">
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="vip" style="margin-right: 8px;"> 1-자동신청
+        </label>
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="vip" style="margin-right: 8px;"> 1-수동신청
+        </label>
+        <label style="display: block; margin-bottom: 12px; font-weight: normal; font-size: 15px;">
+          <input type="radio" name="vip" style="margin-right: 8px;"> 1-추후신청
+        </label>
+      </div>
+    </div>
+
+    <button class="form-submit" onclick="alert('쿠폰이 발급되었습니다!'); closeModal('prefModal')">제출하고 쿠폰받기</button>
+  </div>
+</div>
+
+<script>
+// Hero Toggle
+function toggleHero() {
+  const hero = document.getElementById('heroSection');
+  hero.classList.toggle('open');
+  document.body.classList.toggle('hero-active');
+}
+
+// Hero Expansion
+let currentHero = null;
+let currentVideoStage = 'dance'; // dance, idle, action
+
+function expandHero(heroId) {
+  currentHero = heroId;
+  const expanded = document.getElementById('heroExpanded');
+  const video = document.getElementById('heroVideo');
+  const actions = document.getElementById('heroActions');
+  
+  // Show expanded view
+  expanded.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  // Play dance video
+  playHeroVideo('dance');
+}
+
+function playHeroVideo(stage) {
+  const video = document.getElementById('heroVideo');
+  const actions = document.getElementById('heroActions');
+  currentVideoStage = stage;
+  
+  // Video paths
+  const videoPath = `assets/hero${currentHero}-${stage}.mp4`;
+  
+  video.src = videoPath;
+  video.load();
+  video.play().catch(e => console.log('Video play failed:', e));
+  
+  if (stage === 'dance') {
+    // After dance, show idle loop
+    video.onended = () => {
+      playHeroVideo('idle');
+    };
+    actions.classList.remove('show');
+  } else if (stage === 'idle') {
+    // Loop idle video and show buttons
+    video.loop = true;
+    actions.classList.add('show');
+    
+    // Add touch interaction
+    video.onclick = () => {
+      const touchVideos = ['touch1', 'touch2', 'touch3'];
+      const randomTouch = touchVideos[Math.floor(Math.random() * touchVideos.length)];
+      playHeroVideo(randomTouch);
+    };
+  } else if (stage.startsWith('touch')) {
+    // After touch reaction, back to idle
+    video.loop = false;
+    video.onended = () => {
+      playHeroVideo('idle');
+    };
+  } else {
+    // Action videos (tg, cp, etc)
+    video.loop = false;
+    video.onended = () => {
+      // After action video, perform action
+      if (stage === 'tg') {
+        window.open('https://t.me/woo247', '_blank');
+      } else if (stage === 'cp') {
+        closeHeroExpanded();
+        showPrefModal();
+      }
+      playHeroVideo('idle');
+    };
+  }
+}
+
+function heroAction(action) {
+  const actions = document.getElementById('heroActions');
+  actions.classList.remove('show');
+  
+  switch(action) {
+    case 'vip':
+      playHeroVideo('cp'); // Coupon request video
+      break;
+    case 'grade':
+      playHeroVideo('grade'); // Grade info video (if exists)
+      break;
+    case 'promo':
+      playHeroVideo('promo'); // Promo video (if exists)
+      break;
+    case 'partner':
+      playHeroVideo('tg'); // Telegram video
+      break;
+  }
+}
+
+function closeHeroExpanded() {
+  const expanded = document.getElementById('heroExpanded');
+  const video = document.getElementById('heroVideo');
+  const actions = document.getElementById('heroActions');
+  
+  expanded.classList.remove('active');
+  actions.classList.remove('show');
+  video.pause();
+  video.src = '';
+  document.body.style.overflow = '';
+  currentHero = null;
+}
+
+// Modals
+function openJoinModal() {
+  document.getElementById('joinModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function showWelcomeModal() {
+  closeAllModals();
+  document.getElementById('welcomeModal').classList.add('show');
+}
+
+function openLoginModal() {
+  closeAllModals();
+  document.getElementById('loginModal').classList.add('show');
+}
+
+function showPrefModal() {
+  closeAllModals();
+  document.getElementById('prefModal').classList.add('show');
+  initPrefForm();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeAllModals() {
+  document.querySelectorAll('.form-modal, .modal').forEach(m => m.classList.remove('show'));
+  document.body.style.overflow = '';
+}
+
+function openPromoModal(title) {
+  document.getElementById('promoTitle').textContent = title;
+  document.getElementById('promoModal').classList.add('show');
+}
+
+function openNavModal(title) {
+  document.getElementById('navTitle').textContent = title;
+  const list = document.getElementById('navMenuList');
+  
+  const menus = {
+    '프로모션': ['공식,비공식프로모션', '신규즉시프로모션', '시험범위공부하기', '퀴즈풀고쿠폰받기'],
+    '파트너서비스': ['파트너서비스', '등급별 혜택', '문의하기', '파트너인턴십 지원', '쿠폰신청하기', '긴급쿠폰신청'],
+    '쿠폰': ['쿠폰의 종류', '쿠폰신청하기', '긴급쿠폰신청하기', '인턴파트너영업쿠폰신청']
+  };
+  
+  list.innerHTML = (menus[title] || []).map(item => 
+    `<div class="menu-item">
+      <div class="menu-item-title">${item}</div>
+      <div class="menu-item-arrow">›</div>
+    </div>`
+  ).join('');
+  
+  document.getElementById('navModal').classList.add('show');
+}
+
+// Nav active state
+document.querySelectorAll('.nav-item').forEach((item, i) => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (i === 0) item.classList.add('active');
+  });
+});
+
+// ===== Preference Wizard Logic =====
+let prefCurrent = 1;
+const PREF_STEPS = 3;
+
+function initPrefForm() {
+  prefCurrent = 1;
+  setPrefStep(1);
+  // 추천코드 라디오 토글
+  document.querySelectorAll('input[name="code_ok"]').forEach(r => {
+    r.onchange = () => {
+      const show = r.value === 'no' && r.checked;
+      const el = document.getElementById('code_input');
+      if (el) el.style.display = show ? 'block' : 'none';
+    };
+  });
+  // 기타 금액 토글
+  document.querySelectorAll('input[name="gift"]').forEach(r => {
+    r.onchange = () => {
+      const show = r.value === '기타' && r.checked;
+      const el = document.getElementById('gift_other');
+      if (el) el.style.display = show ? 'block' : 'none';
+    };
+  });
+  // 초기 표시
+  const codeNo = document.querySelector('input[name="code_ok"][value="no"]');
+  const codeEl = document.getElementById('code_input');
+  if (codeEl) codeEl.style.display = (codeNo && codeNo.checked) ? 'block' : 'none';
+  const giftEl = document.getElementById('gift_other');
+  if (giftEl) giftEl.style.display = 'none';
+  const thanks = document.getElementById('prefThanks');
+  if (thanks) thanks.style.display = 'none';
+}
+
+function setPrefStep(n) {
+  prefCurrent = n;
+  document.querySelectorAll('#prefModal .pref-step').forEach(s => {
+    s.classList.toggle('active', Number(s.dataset.step) === n);
+  });
+  // dots
+  const dots = document.querySelectorAll('#prefStepDots .step-dot');
+  dots.forEach((d, i) => d.classList.toggle('on', i < n));
+}
+
+function prefNext() {
+  // 간단 검증
+  if (prefCurrent === 1) {
+    const ok = document.querySelector('input[name="code_ok"]:checked')?.value || 'yes';
+    if (ok === 'no') {
+      const v = document.getElementById('code_input').value.trim();
+      if (!v) { alert('추천코드를 입력해주세요.'); return; }
+    }
+    if (!document.getElementById('acc_id').value.trim()) { alert('아이디를 입력해주세요.'); return; }
+    if (!document.getElementById('acc_phone').value.trim()) { alert('전화번호를 입력해주세요.'); return; }
+  }
+  if (prefCurrent === 2) {
+    const req2 = ['fav_game','play_7days','priority'].every(name => !!document.querySelector(`input[name="${name}"]:checked`));
+    if (!req2) { alert('모든 항목을 선택해주세요.'); return; }
+  }
+  if (prefCurrent < PREF_STEPS) setPrefStep(prefCurrent + 1);
+}
+
+function prefPrev() {
+  if (prefCurrent > 1) setPrefStep(prefCurrent - 1);
+}
+
+function prefSubmit() {
+  // 마지막 검증
+  const giftSel = document.querySelector('input[name="gift"]:checked');
+  if (!giftSel) { alert('선물(쿠폰) 금액을 선택해주세요.'); return; }
+  if (giftSel.value === '기타') {
+    const v = document.getElementById('gift_other').value.trim();
+    if (!v) { alert('기타 금액을 입력해주세요.'); return; }
+  }
+  const quiz = document.querySelector('input[name="quiz"]:checked')?.value;
+  if (!quiz) { alert('퀴즈 정답을 선택해주세요.'); return; }
+
+  // 퀴즈 정답 체크(정답: 9000)
+  const thanks = document.getElementById('prefThanks');
+  if (quiz === '9000') {
+    if (thanks) thanks.style.display = 'block';
+  } else {
+    if (thanks) thanks.style.display = 'none';
+    alert('퀴즈 정답이 아닙니다. 다시 선택해주세요.');
+    return;
+  }
+
+  // TODO:여기서 서버로 제출 데이터 전송 가능
+  // fetch('/api/pref', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) })
+
+  alert('제출 완료! 쿠폰이 곧 발급됩니다.');
+  closeModal('prefModal');
+}
+
+</script>
+</body>
+</html>
