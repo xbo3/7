@@ -103,6 +103,25 @@ aside{width:var(--sidebar-w);flex-shrink:0}
 .modal .title{font-weight:800}
 .modal .close{color:#cbd5e1}
 </style>
+
+<script>
+(function(){
+  const url = new URL(location.href);
+  const f = url.searchParams.get('force');
+  if (f === 'desktop') localStorage.setItem('forceDesktop','1');
+  if (f === 'mobile')  localStorage.removeItem('forceDesktop');
+
+  const forced = localStorage.getItem('forceDesktop') === '1';
+  const inMobile = /\/mobile(\/|$)/i.test(location.pathname);
+  const mobileUA = /(Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini)/i.test(navigator.userAgent);
+  const small = Math.min(window.innerWidth, window.innerHeight) <= 768;
+
+  if (!inMobile && !forced && (f === 'mobile' || mobileUA || small)) {
+    location.replace('mobile/');
+  }
+})();
+</script>
+
 </head>
 <body>
 <header>
