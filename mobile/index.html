@@ -99,6 +99,37 @@ header {
   color: #fff;
 }
 
+/* VIP 버튼 글로우(ON) - 느린 속도 */
+.btn-vip.glow {
+  position: relative;
+  box-shadow: 0 0 12px rgba(255,255,255,0.6), 0 0 32px rgba(0,255,128,0.4);
+  border: 2px solid rgba(0,255,128,0.6) !important;
+  animation: vipSlowPulse 2.5s ease-in-out infinite;
+  transition: box-shadow 0.4s ease, border 0.4s ease;
+}
+
+@keyframes vipSlowPulse {
+  0% {
+    box-shadow: 0 0 6px rgba(0,255,128,0.2),
+                0 0 18px rgba(0,255,128,0.15),
+                0 0 28px rgba(0,255,128,0.1);
+    border-color: rgba(0,255,128,0.4);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(255,255,255,0.7),
+                0 0 28px rgba(0,255,128,0.55),
+                0 0 48px rgba(0,255,128,0.4);
+    border-color: rgba(0,255,128,0.8);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(0,255,128,0.2),
+                0 0 18px rgba(0,255,128,0.15),
+                0 0 28px rgba(0,255,128,0.1);
+    border-color: rgba(0,255,128,0.4);
+  }
+}
+
+
 .member-bar button:active {
   transform: scale(0.97);
 }
@@ -766,7 +797,7 @@ main {
 <div class="member-bar">
   <button class="btn-join" onclick="openJoinModal()">가입</button>
   <button class="btn-login" onclick="openLoginModal()">로그인</button>
-  <button class="btn-vip" onclick="toggleHero()">VIP 호출</button>
+  <button class="btn-vip" id="vipBtn" onclick="toggleHero()">VIP 호출</button>
 </div>
 
 <!-- Hero Section (우측 슬라이드) -->
@@ -845,7 +876,7 @@ main {
 <!-- Main Content -->
 <main>
   <!-- Big Banner (빅소켓) - 쿠폰받기 -->
-  <div class="big-banner" onclick="openJoinModal()">
+  <div class="big-banner" id="couponAnchor" onclick="openJoinModal()">
     <h2>비공식 파트너 프로그램<br>고객 감사 쿠폰</h2>
     <p style="font-size: 14px; margin-top: 12px; opacity: 0.9;">선호도 체크하고 퀴즈도 풀고 쿠폰 받아가세요</p>
     <button style="margin-top: 20px; padding: 12px 32px; background: #fff; color: #000; border: none; border-radius: 10px; font-size: 16px; font-weight: 700;">쿠폰받기</button>
@@ -1084,9 +1115,59 @@ main {
 // Hero Toggle
 function toggleHero() {
   const hero = document.getElementById('heroSection');
-  hero.classList.toggle('open');
-  document.body.classList.toggle('hero-active');
+  const vipBtn = document.getElementById('vipBtn') || document.querySelector('.btn-vip');
+  const mainEl = document.querySelector('main');
+  const coupon = document.getElementById('couponAnchor');
+
+  const opening = !hero.classList.contains('open');
+
+  if (opening) {
+    // 버튼 글로우 ON
+    if (vipBtn) vipBtn.classList.add('glow');
+
+    // 히어로 너비/좌표를 VIP 버튼 경계에 맞춰 계산
+    const gap = 16;
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const rect = vipBtn ? vipBtn.getBoundingClientRect() : {right: vw * 0.33};
+    const width = Math.max(240, vw - rect.right - gap);
+
+    hero.style.width = width + 'px'; // 동적으로 폭 고정
+    hero.classList.add('open');
+    document.body.classList.add('hero-active');
+
+    // 메인 컨텐츠 오른쪽 패딩도 동일하게 확보 (겹침 방지)
+    if (mainEl) mainEl.style.paddingRight = (width + gap) + 'px';
+
+    // 노란 박스(빅배너) 시작 위치로 부드럽게 스크롤
+    if (coupon) {
+      coupon.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  } else {
+    if (vipBtn) vipBtn.classList.remove('glow');
+
+    hero.classList.remove('open');
+    document.body.classList.remove('hero-active');
+
+    // 원상복귀
+    hero.style.width = '';
+    if (mainEl) mainEl.style.paddingRight = '';
+  }
 }
+
+// 리사이즈 시에도 정렬 유지
+window.addEventListener('resize', () => {
+  const hero = document.getElementById('heroSection');
+  const vipBtn = document.getElementById('vipBtn') || document.querySelector('.btn-vip');
+  const mainEl = document.querySelector('main');
+  if (document.body.classList.contains('hero-active')) {
+    const gap = 16;
+    const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    const rect = vipBtn ? vipBtn.getBoundingClientRect() : {right: vw * 0.33};
+    const width = Math.max(240, vw - rect.right - gap);
+    hero.style.width = width + 'px';
+    if (mainEl) mainEl.style.paddingRight = (width + gap) + 'px';
+  }
+})
 
 // Hero Expansion
 let currentHero = null;
