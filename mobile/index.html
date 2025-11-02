@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self';" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>EURO247 Mobile v39 + Join/Preference (v35)</title>
+<title>EURO247 Mobile v39 + Join/Preference (v35) · HCASINO2.COM · MBC</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#0f1215;color:#fff;overflow-x:hidden}
 :root{--contentShift:33.333%;--heroW:66.666%;--slideDur:0.9s;--side:16px;--gap:12px}
-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;border-bottom:1px solid #2a2f36;padding:16px}
-.logo{font-size:24px;font-weight:900;color:#0ea5e9}
-.member-bar{position:fixed;top:60px;left:0;right:0;z-index:1100;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 16px;background:#171a1f;border-bottom:1px solid #2a2f36;pointer-events:auto}
+header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;border-bottom:1px solid #2a2f36;padding:14px 16px;display:flex;align-items:center}
+.logo{font-size:24px;font-weight:900;color:#0ea5e9;display:flex;align-items:center;gap:10px}
+.logo img{height:28px;display:block}
+.member-bar{position:fixed;top:56px;left:0;right:0;z-index:1100;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 16px;background:#171a1f;border-bottom:1px solid #2a2f36;pointer-events:auto}
 .member-bar button{padding:14px;border-radius:10px;border:none;font-weight:800;font-size:14px;cursor:pointer;color:#fff}
 .btn-join{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
 .btn-login{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)}
 .btn-vip{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)}
 .btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);border:2px solid rgba(0,255,170,.55);transition:box-shadow .4s ease,border .4s ease;animation:vipPulse 2.4s ease-in-out infinite}
 @keyframes vipPulse{0%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45);border-color:rgba(0,255,170,.75)}100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}}
-.container{position:fixed;top:130px;left:0;right:0;bottom:70px;overflow:hidden;z-index:100}
+.container{position:fixed;top:126px;left:0;right:0;bottom:70px;overflow:hidden;z-index:100}
 .content-area{position:absolute;inset:0;padding:16px;overflow-y:auto;transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1);will-change:transform}
 .content-area::-webkit-scrollbar{display:none}
 .hero-area{display:flex;position:absolute;top:0;right:0;bottom:0;width:var(--heroW);padding:16px;overflow-y:auto;transform:translateX(100%);transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1);will-change:transform;z-index:150;flex-direction:column;gap:10px;pointer-events:none}
@@ -36,17 +37,28 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 .hero-name{font-size:12px;color:#bbb;margin-bottom:4px}
 .hero-title{font-size:14px;font-weight:800}
 /* locked image paths (모바일 절대경로) */
-.bg-hero1{background-image:url("/7/mobile/assets/herom1.jpg?v=3")}
-.bg-hero2{background-image:url("/7/mobile/assets/herom2.jpg?v=3")}
-.bg-hero3{background-image:url("/7/mobile/assets/herom3.jpg?v=3")}
+.bg-hero1{background-image:url("/7/mobile/assets/herom1.jpg?v=5")}
+.bg-hero2{background-image:url("/7/mobile/assets/herom2.jpg?v=5")}
+.bg-hero3{background-image:url("/7/mobile/assets/herom3.jpg?v=5")}
 /* bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#13161B;border-top:1px solid #2a2f36;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:200}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;color:#666;padding:4px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#13161B;border-top:1px solid #2a2f36;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:300}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;color:#8892a6;padding:4px}
 .nav-item.active{color:#0ea5e9}
 .nav-icon{font-size:24px}
 .nav-label{font-size:11px;font-weight:600}
+/* bottom sheet */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:saturate(60%) blur(2px);display:none;z-index:250}
+.sheet{position:fixed;left:0;right:0;bottom:-60vh;height:58vh;background:#0f141a;border-top:1px solid #303845;border-radius:16px 16px 0 0;z-index:260;box-shadow:0 -10px 30px rgba(0,0,0,.45);transition:transform .45s cubic-bezier(.22,.61,.36,1);transform:translateY(100%)}
+.sheet.show{transform:translateY(0)}
+.sheet-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #263040}
+.sheet-title{font-weight:900}
+.sheet-close{margin-left:auto;cursor:pointer;color:#9fb3c8}
+.sheet-content{padding:12px 16px 18px;overflow-y:auto;max-height:50vh}
+.subgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.subbtn{padding:12px;border-radius:12px;text-align:center;background:#121b24;color:#d7e7ff;text-decoration:none;font-weight:800;border:1px solid #203040}
+.subbtn:active{transform:scale(0.98)}
 /* modals (v35 copy) */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1200}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:320}
 .modal.show{display:flex}
 .modal-box{background:#12161c;border:1px solid #2a2f36;border-radius:14px;padding:20px;width:90%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 10px 30px rgba(0,0,0,.45)}
 .modal-title{font-size:18px;font-weight:900;margin-bottom:16px;display:flex;align-items:center;gap:8px}
@@ -58,12 +70,13 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:10px 12px;border-radius:999px;border:1px solid #2a2f36;background:#121820;color:#cfe7ff;font-weight:700;font-size:12px;cursor:pointer}
 .chip.active{background:#0ea5e9;color:#002233;border-color:#35c1ff}
-/* safe click */
 .member-bar,.member-bar *{pointer-events:auto!important}
 </style>
 </head>
 <body>
-<header><div class="logo">EURO247</div></header>
+<header>
+  <div class="logo" id="logoSlot">EURO247</div>
+</header>
 
 <div class="member-bar">
   <button class="btn-join" onclick="openModal('joinModal')">가입</button>
@@ -73,11 +86,11 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 
 <div id="container" class="container">
   <section class="content-area">
-    <div class="bigm" style="background-image:url('/7/mobile/assets/bigm1.png?v=3')"></div>
+    <div class="bigm" style="background-image:url('/7/mobile/assets/bigm1.png?v=5')"></div>
     <div class="promo-grid">
-      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom1.png?v=3')"><span class="cap">프로모션 1</span></a>
-      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom2.png?v=3')"><span class="cap">프로모션 2</span></a>
-      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom3.png?v=3')"><span class="cap">프로모션 3</span></a>
+      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom1.png?v=5')"><span class="cap">프로모션 1</span></a>
+      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom2.png?v=5')"><span class="cap">프로모션 2</span></a>
+      <a class="promo-card" href="#" style="background-image:url('/7/mobile/assets/prom3.png?v=5')"><span class="cap">프로모션 3</span></a>
       <a class="promo-card" href="#" style="background:linear-gradient(135deg,#424242 0%,#212121 100%)"><span class="cap">프로모션 4</span></a>
     </div>
   </section>
@@ -90,11 +103,21 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 </div>
 
 <nav class="bottom-nav">
-  <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></div>
-  <div class="nav-item"><div class="nav-icon">🎁</div><div class="nav-label">프로모션</div></div>
-  <div class="nav-item"><div class="nav-icon">🎫</div><div class="nav-label">파트너</div></div>
-  <div class="nav-item"><div class="nav-icon">💸</div><div class="nav-label">쿠폰</div></div>
+  <div class="nav-item" data-type="home"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></div>
+  <div class="nav-item" data-type="promo"><div class="nav-icon">🎁</div><div class="nav-label">프로모션</div></div>
+  <div class="nav-item" data-type="partner"><div class="nav-icon">🎫</div><div class="nav-label">파트너</div></div>
+  <div class="nav-item" data-type="coupon"><div class="nav-icon">💸</div><div class="nav-label">쿠폰</div></div>
 </nav>
+
+<!-- bottom sheet -->
+<div id="sheetBackdrop" class="sheet-backdrop"></div>
+<div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-header">
+    <div id="sheetTitle" class="sheet-title">메뉴</div>
+    <div class="sheet-close" onclick="closeSheet()">닫기 ✕</div>
+  </div>
+  <div id="sheetContent" class="sheet-content"></div>
+</div>
 
 <!-- v35: 가입 모달 -->
 <div id="joinModal" class="modal" role="dialog" aria-modal="true">
@@ -110,13 +133,13 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
   </div>
 </div>
 
-<!-- v35: 가입 완료 + 연계 안내 모달 -->
+<!-- v35: 가입 완료 + 연계 안내 모달 (HCASINO2.COM + 코드 MBC) -->
 <div id="completeModal" class="modal" role="dialog" aria-modal="true">
   <div class="modal-box" style="text-align:center">
     <div class="modal-title" style="justify-content:center">🎉 가입 완료! <span style="margin-left:auto;cursor:pointer" onclick="closeModal('completeModal')">✕</span></div>
     <p style="color:#d7dee6;margin:10px 0 16px">쿠폰을 받으시려면 파트너 사이트 가입이 필요합니다</p>
-    <a id="partnerLink" href="@@@@@PARTNER_SITE_URL" target="_blank" style="display:inline-block;font-weight:900;color:#43b0ff;text-decoration:none;margin:2px 0 8px">@@@@@PARTNER_SITE_HOST</a>
-    <div style="color:#ffd166;font-weight:900;margin-bottom:18px">추천코드: <span id="refCode">@@@@@REF_CODE</span></div>
+    <a id="partnerLink" href="https://HCASINO2.COM" rel="noopener" target="_blank" style="display:inline-block;font-weight:900;color:#43b0ff;text-decoration:none;margin:2px 0 8px">HCASINO2.COM</a>
+    <div style="color:#ffd166;font-weight:900;margin-bottom:18px">추천코드: <span id="refCode">MBC</span></div>
     <button class="btn-primary" onclick="gotoPreference()">가입 완료! 선호도 체크하기</button>
   </div>
 </div>
@@ -148,15 +171,16 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 </div>
 
 <script>
+/* VIP 슬라이드 */
 function toggleHero(){
   const c=document.getElementById('container'); const b=document.getElementById('vipBtn');
   const open=!c.classList.contains('hero-active');
   if(open){ c.classList.add('hero-active'); b&&b.classList.add('glow'); }
   else{ c.classList.remove('hero-active'); b&&b.classList.remove('glow'); }
 }
+/* 모달 기본 */
 function openModal(id){const m=document.getElementById(id); if(m) m.classList.add('show');}
 function closeModal(id){const m=document.getElementById(id); if(m) m.classList.remove('show');}
-// v35 join flow → complete → preference
 document.getElementById('joinForm').addEventListener('submit',function(e){
   e.preventDefault();
   closeModal('joinModal');
@@ -168,11 +192,91 @@ document.querySelectorAll('#prefChips .chip').forEach(function(el){
 });
 function savePreference(){
   document.getElementById('prefToast').style.display='block';
-  setTimeout(function(){
-    // TODO: 쿠폰 페이지로 이동 원하면 아래 location.href 지정
-    closeModal('prefModal');
-  }, 1000);
+  setTimeout(function(){ closeModal('prefModal'); }, 1000);
 }
+/* 하단 네비 하위분류(바텀 시트) */
+const SHEET_MAP={
+  home:{title:'홈',items:[
+    {t:'메인', href:'#'},
+    {t:'공지/안내', href:'#'},
+    {t:'시간표', href:'#'},
+    {t:'문의', href:'#'}
+  ]},
+  promo:{title:'프로모션',items:[
+    {t:'첫입금/재충전', href:'#'},
+    {t:'페이백/포인트', href:'#'},
+    {t:'VIP 전용', href:'#'},
+    {t:'올인이벤트', href:'#'}
+  ]},
+  partner:{title:'파트너',items:[
+    {t:'VIP Host', href:'#'},
+    {t:'Executive Host', href:'#'},
+    {t:'Mystery Host', href:'#'},
+    {t:'파트너 등록', href:'#'}
+  ]},
+  coupon:{title:'쿠폰',items:[
+    {t:'선호도 체크', href:'#', on:'openPref'},
+    {t:'퀴즈 쿠폰', href:'#'},
+    {t:'돌발 쿠폰', href:'#'},
+    {t:'내 쿠폰함', href:'#'}
+  ]},
+};
+function openSheet(type){
+  const data=SHEET_MAP[type]; if(!data) return;
+  const sheet=document.getElementById('sheet');
+  const cont=document.getElementById('sheetContent');
+  const title=document.getElementById('sheetTitle');
+  const backdrop=document.getElementById('sheetBackdrop');
+  title.textContent=data.title;
+  cont.innerHTML = '<div class="subgrid">'+ data.items.map(it=>{
+    return `<a class="subbtn" href="${it.href || '#'}" data-on="${it.on||''}">${it.t}</a>`;
+  }).join('') + '</div>';
+  // attach special actions
+  cont.querySelectorAll('a.subbtn').forEach(a=>{
+    const on=a.getAttribute('data-on');
+    if(on==='openPref'){
+      a.addEventListener('click', (e)=>{ e.preventDefault(); closeSheet(); openModal('prefModal'); });
+    }
+  });
+  backdrop.style.display='block';
+  sheet.classList.add('show');
+  backdrop.onclick=closeSheet;
+}
+function closeSheet(){
+  const sheet=document.getElementById('sheet');
+  const backdrop=document.getElementById('sheetBackdrop');
+  sheet.classList.remove('show');
+  setTimeout(()=>{ backdrop.style.display='none'; }, 300);
+}
+document.querySelectorAll('.bottom-nav .nav-item').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
+    openSheet(el.getAttribute('data-type'));
+  });
+});
+/* 로고 자동 교체 (logom.* 자동 탐색) */
+(function autoLogo(){
+  const slot=document.getElementById('logoSlot');
+  if(!slot) return;
+  const candidates=['/7/mobile/assets/logom.png','/7/mobile/assets/logom.jpg','/7/mobile/assets/logom.webp','/7/mobile/assets/logom.svg'];
+  let done=false;
+  function tryNext(i){
+    if(i>=candidates.length){ return; }
+    const src=candidates[i]+'?v=5';
+    const img=new Image();
+    img.onload=function(){
+      if(done) return;
+      done=true;
+      slot.innerHTML='';
+      img.alt='logo';
+      slot.appendChild(img);
+    };
+    img.onerror=function(){ tryNext(i+1); };
+    img.src=src;
+  }
+  tryNext(0);
+})();
 </script>
 </body>
 </html>
