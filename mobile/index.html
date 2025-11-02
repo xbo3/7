@@ -4,13 +4,14 @@
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self';" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>EURO247 · Mobile (Hero Slide · lock-path)</title>
+<title>EURO247 · Mobile (Hero Slide · lock-path · bigm/prom)</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',system-ui,Roboto,'Segoe UI',sans-serif;background:#0f1215;color:#fff;overflow-x:hidden}
   :root{--side-pad:16px;--gap:8px;--contentShift:33.333%;--nudgeX:0px;--heroW:calc(100% - var(--contentShift) - var(--nudgeX));--slideDur:0.9s;--ease:cubic-bezier(.22,.61,.36,1)}
   header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;border-bottom:1px solid #2a2f36;padding:16px}
   .logo{font-size:24px;font-weight:900;color:#0ea5e9}
+
   .member-bar{position:fixed;top:60px;left:0;right:0;z-index:1100;display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--gap);padding:12px var(--side-pad);background:#171a1f;border-bottom:1px solid #2a2f36;pointer-events:auto}
   .member-bar, .member-bar *{pointer-events:auto !important}
   .member-bar button{padding:14px;border-radius:10px;border:none;font-weight:800;font-size:14px;cursor:pointer;color:#fff;touch-action:manipulation}
@@ -19,36 +20,41 @@
   .btn-vip{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)}
   .btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);border:2px solid rgba(0,255,170,.55);transition:box-shadow .4s ease,border .4s ease;animation:vipPulse 2.4s ease-in-out infinite}
   @keyframes vipPulse{0%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45);border-color:rgba(0,255,170,.75)}100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}}
+
   .container{position:fixed;top:130px;left:0;right:0;bottom:70px;overflow:hidden;z-index:100}
   .content-area{position:absolute;inset:0;padding:16px;overflow-y:auto;transition:transform var(--slideDur) var(--ease);will-change:transform;background:transparent}
+
   .hero-area{display:flex;position:absolute;top:0;right:0;bottom:0;width:var(--heroW);padding:16px;overflow-y:auto;transform:translateX(100%);transition:transform var(--slideDur) var(--ease);will-change:transform;z-index:150;flex-direction:column;gap:10px;pointer-events:none}
   .container.hero-active .content-area{transform:translateX(calc(-1 * (var(--contentShift) + var(--nudgeX))))}
   .container.hero-active .hero-area{transform:translateX(0);pointer-events:auto}
-  .big-banner{background:linear-gradient(135deg,#FDD835 0%,#F9A825 100%);border-radius:16px;padding:32px 20px;margin-bottom:16px;color:#000}
-  .big-banner h2{font-size:22px;font-weight:900;margin-bottom:12px}
-  .big-banner p{font-size:14px;margin-bottom:16px;opacity:.9}
-  .big-banner .cta{display:inline-block;background:#000;color:#fff;border:none;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:800;text-decoration:none}
+
+  /* bigm 영역: 큰 좌측 배너 */
+  .bigm{border-radius:16px;min-height:240px;margin-bottom:16px;background:#222;background-position:center;background-size:cover;position:relative;overflow:hidden}
+  .bigm::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.35),transparent 40%)}
+
+  /* 작은 프로모 소켓 */
   .promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-  .promo-card{border-radius:14px;padding:20px;min-height:160px;display:flex;flex-direction:column;justify-content:flex-end;text-decoration:none;color:#fff}
-  .promo-card .t1{font-size:18px;font-weight:800;margin-bottom:6px}
-  .promo-card .t2{font-size:13px;opacity:.9}
-  .promo-yellow{background:linear-gradient(135deg,#FDD835 0%,#F9A825 100%);color:#000}
-  .promo-green{background:linear-gradient(135deg,#66BB6A 0%,#43A047 100%)}
-  .promo-red{background:linear-gradient(135deg,#EF5350 0%,#E53935 100%)}
-  .promo-dark{background:linear-gradient(135deg,#424242 0%,#212121 100%)}
-  .hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;min-height:220px;position:relative;text-decoration:none;color:#fff;display:block}
+  .promo-card{border-radius:14px;min-height:160px;display:block;position:relative;overflow:hidden;text-decoration:none;color:#fff;background:#2a2f36;background-position:center;background-size:cover}
+  .promo-card::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45),transparent 40%)}
+  .promo-card .cap{position:absolute;left:10px;bottom:10px;font-weight:800;font-size:14px;z-index:2}
+
+  /* 히어로 카드 (우측 슬라이드) */
+  .hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;min-height:220px;position:relative;text-decoration:none;color:#fff;display:block;background-position:center;background-size:cover}
   .hero-info{position:absolute;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
   .hero-name{font-size:12px;color:#bbb;margin-bottom:4px}
   .hero-title{font-size:14px;font-weight:800}
-  /* 절대 경로 고정 (user page 루트 기준) */
-  .bg-hero1{background:url("/7/mobile/assets/herom1.jpg") center/cover no-repeat}
-  .bg-hero2{background:url("/7/mobile/assets/herom2.jpg") center/cover no-repeat}
-  .bg-hero3{background:url("/7/mobile/assets/herom3.jpg") center/cover no-repeat}
+
+  /* 절대경로 고정 (User Page 루트) */
+  .bg-hero1{background-image:url("/7/mobile/assets/herom1.jpg?v=2")}
+  .bg-hero2{background-image:url("/7/mobile/assets/herom2.jpg?v=2")}
+  .bg-hero3{background-image:url("/7/mobile/assets/herom3.jpg?v=2")}
+
   .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#13161B;border-top:1px solid #2a2f36;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:200}
   .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;color:#666;padding:4px}
   .nav-item.active{color:#0ea5e9}
   .nav-icon{font-size:24px}
   .nav-label{font-size:11px;font-weight:600}
+
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1200}
   .modal.show{display:flex}
   .modal-box{background:#12161c;border:1px solid #2a2f36;border-radius:14px;padding:20px;width:90%;max-width:420px}
@@ -57,26 +63,37 @@
 </style>
 </head>
 <body>
+
 <header><div class="logo">EURO247</div></header>
+
 <div class="member-bar">
   <button type="button" class="btn-join"  id="btnJoin" onclick="openJoin()">가입</button>
   <button type="button" class="btn-login" id="btnLogin" onclick="openLogin()">로그인</button>
   <button type="button" id="vipBtn" class="btn-vip" onclick="toggleHero()">VIP 호출</button>
 </div>
+
 <div id="container" class="container">
   <section id="contentArea" class="content-area">
-    <div id="couponAnchor" class="big-banner">
-      <h2>비공식 파트너 프로그램<br />고객 감사 쿠폰</h2>
-      <p>선호도 체크하고 퀴즈도 풀고 쿠폰 받아가세요</p>
-      <a class="cta" href="./coupon.html">쿠폰받기</a>
-    </div>
+    <!-- 큰 배너: bigm1.png 고정 -->
+    <div class="bigm" style="background-image:url('/7/mobile/assets/bigm1.png?v=2')"></div>
+
+    <!-- 작은 소켓 4개: prom1~3 + 안전백업 -->
     <div class="promo-grid">
-      <a class="promo-card promo-yellow" href="./prom1.html"><div class="t1">프로모션</div><div class="t2">총 2개의 쿠폰</div></a>
-      <a class="promo-card promo-green"  href="./prom2.html"><div class="t1">30,000 포인트</div><div class="t2">최근 충전 보상</div></a>
-      <a class="promo-card promo-red"    href="./prom3.html"><div class="t1">70,000 VIP 포인트</div><div class="t2">VIP 전용 보상</div></a>
-      <a class="promo-card promo-dark"   href="./prom4.html"><div class="t1">100,000 VIP 포인트</div><div class="t2">최근 등급 달성</div></a>
+      <a class="promo-card" href="./prom1.html" style="background-image:url('/7/mobile/assets/prom1.png?v=2')">
+        <span class="cap">프로모션 1</span>
+      </a>
+      <a class="promo-card" href="./prom2.html" style="background-image:url('/7/mobile/assets/prom2.png?v=2')">
+        <span class="cap">프로모션 2</span>
+      </a>
+      <a class="promo-card" href="./prom3.html" style="background-image:url('/7/mobile/assets/prom3.png?v=2')">
+        <span class="cap">프로모션 3</span>
+      </a>
+      <a class="promo-card" href="./prom4.html" style="background-image:url('/7/mobile/assets/prom4.png?v=2'), linear-gradient(135deg,#424242 0%,#212121 100%)">
+        <span class="cap">프로모션 4</span>
+      </a>
     </div>
   </section>
+
   <aside id="heroArea" class="hero-area">
     <a class="hero-card bg-hero1" href="./host-jayme.html">
       <div class="hero-info"><div class="hero-name">Jayme Sun (제이미 선)</div><div class="hero-title">Executive Host 🔷</div></div>
@@ -89,20 +106,56 @@
     </a>
   </aside>
 </div>
+
 <nav class="bottom-nav">
   <div class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></div>
   <div class="nav-item"><div class="nav-icon">🎁</div><div class="nav-label">프로모션</div></div>
   <div class="nav-item"><div class="nav-icon">🎫</div><div class="nav-label">파트너</div></div>
   <div class="nav-item"><div class="nav-icon">💸</div><div class="nav-label">쿠폰</div></div>
 </nav>
-<div id="joinModal" class="modal"><div class="modal-box"><div class="modal-title">회원가입</div><div style="font-size:14px;opacity:.85;line-height:1.6">버튼은 정상 작동 중입니다. 실제 페이지 연결은 <code>join.html</code>만 추가하시면 됩니다.</div><a href="#" class="modal-close" onclick="closeModal('joinModal')">닫기</a></div></div>
-<div id="loginModal" class="modal"><div class="modal-box"><div class="modal-title">로그인</div><div style="font-size:14px;opacity:.85;line-height:1.6">버튼은 정상 작동 중입니다. 실제 페이지 연결은 <code>login.html</code>만 추가하시면 됩니다.</div><a href="#" class="modal-close" onclick="closeModal('loginModal')">닫기</a></div></div>
+
+<div id="joinModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-title">회원가입</div>
+    <div style="font-size:14px;opacity:.85;line-height:1.6">버튼은 정상 작동 중입니다. 실제 페이지 연결은 <code>join.html</code>만 추가하시면 됩니다.</div>
+    <a href="#" class="modal-close" onclick="closeModal('joinModal')">닫기</a>
+  </div>
+</div>
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-title">로그인</div>
+    <div style="font-size:14px;opacity:.85;line-height:1.6">버튼은 정상 작동 중입니다. 실제 페이지 연결은 <code>login.html</code>만 추가하시면 됩니다.</div>
+    <a href="#" class="modal-close" onclick="closeModal('loginModal')">닫기</a>
+  </div>
+</div>
+
 <script>
-function toggleHero(){var c=document.getElementById('container');var b=document.getElementById('vipBtn');var open=!c.classList.contains('hero-active');if(open){c.classList.add('hero-active');if(b)b.classList.add('glow');var a=document.getElementById('couponAnchor');if(a&&a.scrollIntoView){a.scrollIntoView({behavior:'smooth',block:'start'});} }else{c.classList.remove('hero-active');if(b)b.classList.remove('glow');}}
-function openJoin(){var m=document.getElementById('joinModal');if(m){m.classList.add('show');}}
-function openLogin(){var m=document.getElementById('loginModal');if(m){m.classList.add('show');}}
-function closeModal(id){var m=document.getElementById(id);if(m){m.classList.remove('show');}}
-document.addEventListener('DOMContentLoaded',function(){var v=document.getElementById('vipBtn');var j=document.getElementById('btnJoin');var l=document.getElementById('btnLogin');if(v){v.addEventListener('click',toggleHero,false);v.addEventListener('touchend',toggleHero,false);} if(j){j.addEventListener('click',openJoin,false);j.addEventListener('touchend',openJoin,false);} if(l){l.addEventListener('click',openLogin,false);l.addEventListener('touchend',openLogin,false);} });
+function toggleHero(){
+  var container = document.getElementById('container');
+  var vipBtn = document.getElementById('vipBtn');
+  var open = !container.classList.contains('hero-active');
+  if(open){
+    container.classList.add('hero-active');
+    if(vipBtn) vipBtn.classList.add('glow');
+    var anchor = document.getElementById('couponAnchor');
+    if(anchor && anchor.scrollIntoView){ anchor.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }else{
+    container.classList.remove('hero-active');
+    if(vipBtn) vipBtn.classList.remove('glow');
+  }
+}
+function openJoin(){ var m=document.getElementById('joinModal'); if(m){ m.classList.add('show'); } }
+function openLogin(){ var m=document.getElementById('loginModal'); if(m){ m.classList.add('show'); } }
+function closeModal(id){ var m=document.getElementById(id); if(m){ m.classList.remove('show'); } }
+
+document.addEventListener('DOMContentLoaded', function(){
+  var vipBtn    = document.getElementById('vipBtn');
+  var btnJoin   = document.getElementById('btnJoin');
+  var btnLogin  = document.getElementById('btnLogin');
+  if(vipBtn){   vipBtn.addEventListener('click', toggleHero, false); vipBtn.addEventListener('touchend', toggleHero, false); }
+  if(btnJoin){  btnJoin.addEventListener('click', openJoin, false);   btnJoin.addEventListener('touchend', openJoin, false); }
+  if(btnLogin){ btnLogin.addEventListener('click', openLogin, false);  btnLogin.addEventListener('touchend', openLogin, false); }
+});
 </script>
 </body>
 </html>
