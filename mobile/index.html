@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<title>EURO247 · v40 r3</title>
+<title>EURO247 · v40 r4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -13,9 +13,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;back
 :root{
   --gap:clamp(6px,2vw,12px);
   --side:16px;
-  --slideDur:.9s;
+  --slide:.9s cubic-bezier(.22,.61,.36,1);
   --heroW:66.666%;
-  --contentShift:var(--heroW); /* 이동폭 = 히어로폭 */
   --H-header:56px; --H-member:64px; --H-sub:0px; --H-bottom:64px;
 }
 
@@ -33,60 +32,60 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);border:2px solid rgba(0,255,170,.55);animation:vipPulse 2.4s ease-in-out infinite}
 @keyframes vipPulse{0%,100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15)}50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45)}}
 
-/* ===== Main ===== */
-.container{position:fixed;left:0;right:0;overflow:hidden;display:flex;
+/* ===== Main (새 구조: flex + column-gap) ===== */
+.container{
+  position:fixed; left:0; right:0; overflow:hidden; display:flex;
   top:calc(var(--H-header) + var(--H-member));
   height:calc(100dvh - (var(--H-header) + var(--H-member) + var(--H-sub) + var(--H-bottom)));
+  column-gap:0; transition:column-gap var(--slide);
 }
 
 /* 왼쪽 컨텐츠 */
-.content-area{position:relative;flex:1 1 auto;overflow:hidden;transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1);
-  padding:12px var(--side)}
-/* VIP 열림 시 중앙 이음새를 gap/2로 분배 + 히어로 하단 공백 제거 */
-.container.hero-active .content-area{
-  padding:12px calc(var(--gap)/2) 12px var(--side);
+.content-area{
+  flex:1 1 auto; transition:flex-basis var(--slide);
+  padding:12px var(--side); overflow:hidden;
 }
-.container.hero-active .hero-area{
-  padding:12px var(--side) 0 calc(var(--gap)/2); /* bottom 0 → 하단 공백 제거 */
-}
-
 .viewport-grid{
-  width:100%; max-width:none; margin:0; /* 여백 원천 제거 */
-  height:100%; display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); align-content:start;
-  /* 세로 3행: BIG 8, SMALL 4, SMALL 4 (비율 고정) */
-  grid-template-rows:8fr 4fr 4fr;
+  width:100%; height:100%; display:grid; gap:var(--gap); align-content:start;
+  grid-template-columns:1fr 1fr; grid-template-rows:8fr 4fr 4fr; /* BIG 8, SM 4, SM 4 */
 }
 
-/* BIGM (39:24) */
+/* BIGM (cover로 꽉 채움) */
 .bigm{grid-column:1/3;position:relative;border-radius:16px;overflow:hidden;background:#121821;color:#fff}
 .bigm .slides{position:absolute;inset:0}
-.bigm .slide{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:contain;opacity:0;transition:opacity .8s ease}
+.bigm .slide{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover;opacity:0;transition:opacity .8s ease}
 .bigm .slide.show{opacity:1}
 .bigm .overlay{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(10px,2.6vw,16px)}
 .bigm h2{font-size:clamp(14px,4.2vw,18px);font-weight:900;line-height:1.28}
 .bigm p{font-size:clamp(11px,3.5vw,13px);opacity:.95;margin-top:4px}
 .bigm .cta{align-self:flex-start;background:#fff;color:#000;border:none;padding:9px 18px;border-radius:10px;font-size:clamp(12px,3.6vw,14px);font-weight:800;cursor:pointer}
 
-/* 스몰 4소켓 (정사각형 아님 180×220 비율) */
+/* 스몰 4소켓 (cover로 꽉 채움) */
 .promo-card{position:relative;border-radius:14px;overflow:hidden;background:#222a33}
-.promo-card .img{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:contain}
+.promo-card .img{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover}
 .promo-card .cap{position:absolute;left:10px;bottom:10px;font-weight:800;font-size:clamp(11px,3.4vw,13px);text-shadow:0 2px 6px rgba(0,0,0,.8);color:#fff}
 
-/* 오른쪽 히어로 */
-.hero-area{flex:0 0 var(--heroW);max-width:var(--heroW);padding:12px var(--side);display:flex;flex-direction:column;gap:10px;overflow:auto;
-  transform:translateX(100%);transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1),flex-basis var(--slideDur),max-width var(--slideDur);pointer-events:none}
-.container:not(.hero-active) .hero-area{flex-basis:0;max-width:0}
-.container.hero-active .content-area{transform:translateX(calc(-1 * var(--contentShift)))}
-.container.hero-active .hero-area{transform:translateX(0);pointer-events:auto}
+/* 오른쪽 히어로 (너비 애니메이션) */
+.hero-area{
+  flex:0 0 0; max-width:0; transition:flex-basis var(--slide), max-width var(--slide);
+  padding:12px var(--side) 0 var(--side); display:flex; flex-direction:column; gap:10px; overflow:auto;
+}
 .hero-area::-webkit-scrollbar{display:none}
 .hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;position:relative;text-decoration:none;color:#fff;
-  display:block;background-position:center;background-size:cover;opacity:0;transform:translateX(100px);transition:opacity .6s,transform .6s;aspect-ratio:39/24}
-.container.hero-active .hero-card:nth-child(1){opacity:1;transform:translateX(0);transition-delay:.45s}
-.container.hero-active .hero-card:nth-child(2){opacity:1;transform:translateX(0);transition-delay:.85s}
-.container.hero-active .hero-card:nth-child(3){opacity:1;transform:translateX(0);transition-delay:1.25s}
+  display:block;background-position:center;background-size:cover;opacity:0;transform:translateX(60px);transition:opacity .6s,transform .6s;aspect-ratio:39/24}
 .hero-info{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
 .hero-name{font-size:12px;color:#bbc7d8;margin-bottom:4px}
 .hero-title{font-size:14px;font-weight:800}
+
+/* VIP 열림 상태 */
+.container.hero-active{ column-gap:var(--gap); }
+.container.hero-active .hero-area{ flex-basis:var(--heroW); max-width:var(--heroW); }
+.container.hero-active .content-area{ flex-basis:calc(100% - var(--heroW)); }
+.container.hero-active .hero-card:nth-child(1),
+.container.hero-active .hero-card:nth-child(2),
+.container.hero-active .hero-card:nth-child(3){opacity:1;transform:translateX(0)}
+.container.hero-active .hero-card:nth-child(2){transition-delay:.25s}
+.container.hero-active .hero-card:nth-child(3){transition-delay:.45s}
 
 /* ===== 하단 네비 & 하위분류 바 ===== */
 .bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#13161b;border-top:1px solid #232a34;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:300}
@@ -95,9 +94,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .nav-icon{font-size:22px}
 .nav-label{font-size:11px;font-weight:600}
 
-/* 하위분류 바 (subbar) */
-.subbar{position:fixed;left:0;right:0;bottom:calc(var(--H-bottom));background:#0f141a;border-top:1px solid #263040;
-  display:none;z-index:290;padding:8px var(--side)}
+.subbar{position:fixed;left:0;right:0;bottom:calc(var(--H-bottom));background:#0f141a;border-top:1px solid #263040;display:none;z-index:290;padding:8px var(--side)}
 .subbar.show{display:block}
 .subrow{display:flex;gap:8px;overflow:auto;scrollbar-width:none}
 .subrow::-webkit-scrollbar{display:none}
@@ -106,7 +103,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 
 /* desktop */
 @media (min-width:960px){
-  :root{--heroW:60%;--contentShift:60%}
+  :root{--heroW:60%}
   .member-bar{grid-template-columns:180px 180px 180px;justify-content:center}
 }
 </style>
@@ -150,9 +147,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 </main>
 
 <!-- 하위분류 바 -->
-<div id="subbar" class="subbar">
-  <div id="subrow" class="subrow"></div>
-</div>
+<div id="subbar" class="subbar"><div id="subrow" class="subrow"></div></div>
 
 <!-- 하단 탭 -->
 <nav class="bottom-nav" id="bnav">
@@ -198,7 +193,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 </div></div>
 
 <script>
-/* ===== 레이아웃 높이 보정 ===== */
+/* 높이 보정 */
 function fitBars(){
   const h=document.querySelector('header').offsetHeight;
   const m=document.querySelector('.member-bar').offsetHeight;
@@ -211,7 +206,7 @@ function fitBars(){
 }
 addEventListener('load',fitBars); addEventListener('resize',fitBars);
 
-/* ===== VIP 슬라이드 ===== */
+/* VIP 슬라이드 (너비 기반) */
 function toggleHero(){
   const c=document.getElementById('container'); const b=document.getElementById('vipBtn');
   const open=!c.classList.contains('hero-active');
@@ -219,7 +214,7 @@ function toggleHero(){
   else   { c.classList.remove('hero-active'); b.classList.remove('glow'); }
 }
 
-/* ===== 하위분류 바(Subbar) ===== */
+/* 하위분류 바 */
 const MAP={
   home:{t:'홈',items:['메인','공지/안내']},
   promo:{t:'프로모션',items:['첫입금/재충전','페이백/포인트','이벤트','VIP전용']},
@@ -236,29 +231,23 @@ function populateSubbar(type){
       row.querySelectorAll('.subchip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
       if(txt.includes('선호도')) openModal('prefModal');
-      // TODO: 필요 시 라우팅/스크롤 연결
     };
     row.appendChild(chip);
   });
   bar.classList.add('show'); fitBars();
 }
-
-/* 하단 네비 클릭 → subbar 토글 */
 document.querySelectorAll('.bottom-nav .nav-item').forEach(el=>{
   el.addEventListener('click',()=>{
     const type=el.dataset.type;
     const isActive=el.classList.contains('active');
     document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
     const bar=document.getElementById('subbar');
-    if(isActive){
-      bar.classList.remove('show'); fitBars(); return;
-    }
-    el.classList.add('active');
-    populateSubbar(type);
+    if(isActive){ bar.classList.remove('show'); fitBars(); return; }
+    el.classList.add('active'); populateSubbar(type);
   });
 });
 
-/* ===== 모달 플로우 ===== */
+/* 모달 */
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 document.getElementById('joinForm').addEventListener('submit',e=>{e.preventDefault();closeModal('joinModal');openModal('completeModal');});
@@ -266,31 +255,31 @@ function gotoPreference(){closeModal('completeModal');openModal('prefModal');}
 document.querySelectorAll('#prefChips .chip').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('active')));
 function savePreference(){document.getElementById('prefToast').style.display='block';setTimeout(()=>closeModal('prefModal'),800);}
 
-/* ===== 자산 로딩 (mobile → mobil 폴백) ===== */
+/* 자산 로딩 (mobile → mobil 폴백) */
 (function assets(){
   const bases=['/7/mobile/assets/','/7/mobil/assets/'];
-  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r3';});}
+  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r4';});}
   (async ()=>{
     let base=bases[0]; for(const b of bases){ if(await ok(b+'herom1.jpg')){ base=b; break; } }
     // logo
     const slot=document.getElementById('logoSlot'), logos=['logom.png','logom.jpg','logom.webp','logom.svg'];
-    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r3'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
-    // bigm 슬라이드
-    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r3');}
+    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r4'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
+    // BIGM 슬라이드
+    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r4');}
     initBigm(imgs.length?imgs:[
       'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23161b22"/></svg>'
     ]);
-    // small 4
-    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r3')`;};
+    // 스몰4
+    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r4')`;};
     setImg('p1','prom1.png'); setImg('p2','prom2.png'); setImg('p3','prom3.png'); setImg('p4','prom4.png');
-    // hero
-    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r3')`;};
+    // 히어로
+    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r4')`;};
     H('h1','herom1.jpg'); H('h2','herom2.jpg'); H('h3','herom3.jpg');
     fitBars();
   })();
 })();
 
-/* ===== BIGM 크로스페이드 ===== */
+/* BIGM 크로스페이드 */
 let tm=null, ix=0;
 function initBigm(imgs){
   const a=document.getElementById('slideA'), b=document.getElementById('slideB');
