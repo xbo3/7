@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<title>EURO247 · v40 r6a</title>
+<title>EURO247 · v40 r7</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -41,7 +41,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
   padding:0 var(--side); /* 좌우 여백 통일 */
 }
 
-/* 왼쪽 컨텐츠 & 오른쪽 히어로 : 좌우 패딩 제거, 상/하만 */
+/* 좌/우 패딩 제거, 상/하만 */
 .content-area,.hero-area{ padding:12px 0; }
 
 /* 왼쪽 컨텐츠 */
@@ -62,7 +62,6 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .bigm .overlay{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(10px,2.6vw,16px)}
 .bigm h2{font-size:clamp(14px,4.2vw,18px);font-weight:900;line-height:1.28}
 .bigm p{font-size:clamp(11px,3.5vw,13px);opacity:.95;margin-top:4px}
-/* slide1 때 클릭 가능 표시 */
 .bigm.canJoin{cursor:pointer}
 
 /* 스몰 4소켓 (cover로 꽉 채움) */
@@ -70,16 +69,16 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .promo-card .img{position:absolute;inset:0;background-position:center;background-repeat:no-repeat;background-size:cover}
 .promo-card .cap{position:absolute;left:10px;bottom:10px;font-weight:800;font-size:clamp(11px,3.4vw,13px);text-shadow:0 2px 6px rgba(0,0,0,.8);color:#fff}
 
-/* 오른쪽 히어로 — 그리드 3등분으로 정확히 바닥선 맞추기 */
+/* 오른쪽 히어로 — 3등분 */
 .hero-area{
   flex:0 0 0; max-width:0; transition:flex-basis var(--slide), max-width var(--slide);
   display:grid; grid-template-rows:1fr 1fr 1fr; gap:var(--gap);
-  overflow:hidden; background:#0f1215; min-height:100%; /* 바닥까지 꽉 채움 */
+  overflow:hidden; background:#0f1215; min-height:100%;
 }
 .hero-card{
   border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;position:relative;text-decoration:none;color:#fff;
   display:block;background-position:center;background-size:cover;opacity:0;transform:translateX(60px);transition:opacity .6s,transform .6s;
-  min-height:0; height:100%; /* 각 칸을 가득 채움 */
+  min-height:0; height:100%;
 }
 .hero-info{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
 .hero-name{font-size:12px;color:#bbc7d8;margin-bottom:4px}
@@ -110,27 +109,31 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .subchip.active{background:#0ea5e9;color:#002233;border-color:#35c1ff}
 
 /* ===== 모달(기본 숨김) ===== */
-.modal{
-  position:fixed; inset:0; display:none;
-  align-items:center; justify-content:center;
-  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
-  z-index:5000;
-}
+.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.55); backdrop-filter:blur(2px); z-index:5000; }
 .modal.show{ display:flex; }
-.modal-box{
-  width:min(420px,calc(100vw - 48px));
-  background:#12161b; border:1px solid #2a2f3a; border-radius:16px;
-  padding:16px 16px 18px; color:#eaf2ff;
-}
+.modal-box{ width:min(420px,calc(100vw - 48px)); background:#12161b; border:1px solid #2a2f3a; border-radius:16px; padding:16px 16px 18px; color:#eaf2ff; }
 .form label{display:block; font-weight:800; color:#c9d5e5; margin-top:10px}
-.input{
-  width:100%; margin-top:6px; padding:12px 14px;
-  border-radius:12px; border:1px solid #2a3340; background:#0f141a; color:#eaf2ff
-}
-.btn-primary{
-  width:100%; margin-top:14px; padding:12px 16px; border-radius:12px; border:0;
-  background:#0ea5e9; color:#001018; font-weight:900; cursor:pointer
-}
+.input{ width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:1px solid #2a3340; background:#0f141a; color:#eaf2ff }
+.btn-primary{ width:100%; margin-top:14px; padding:12px 16px; border-radius:12px; border:0; background:#0ea5e9; color:#001018; font-weight:900; cursor:pointer }
+
+/* ===== 설문(연계페이지) 풀스크린 ===== */
+.survey{ position:fixed; inset:0; background:#0f1215; z-index:6000; display:none; flex-direction:column; }
+.survey.show{ display:flex; }
+.sv-head{ height:52px; display:flex; align-items:center; gap:8px; padding:0 14px; border-bottom:1px solid #1e2530; }
+.sv-title{ font-weight:900; font-size:15px; }
+.sv-step{ margin-left:auto; color:#9fb3c8; font-weight:800; font-size:13px; }
+.sv-body{ flex:1; overflow:auto; padding:16px; }
+.qbox{ background:#111722; border:1px solid #202838; border-radius:14px; padding:14px; }
+.qno{ color:#8da6c9; font-weight:900; margin-bottom:8px; }
+.qtitle{ color:#dbe7ff; font-weight:900; line-height:1.45; margin-bottom:10px; }
+.field{ display:flex; flex-direction:column; gap:10px; }
+.input2, .opt{ width:100%; padding:12px 12px; border-radius:12px; border:1px solid #273244; background:#0c131c; color:#eaf2ff; }
+.radio{ display:flex; align-items:center; gap:8px; padding:10px 12px; border:1px solid #273244; background:#0c131c; border-radius:12px; }
+.radio input{ accent-color:#36b7ff; width:16px; height:16px; }
+.sv-foot{ padding:10px 16px 18px; border-top:1px solid #1e2530; }
+.btn-next{ width:100%; padding:12px; border-radius:12px; border:0; background:#2d7dff; color:#fff; font-weight:900; font-size:15px; }
+.btn-next[disabled]{opacity:.4}
+.btn-back{ background:none; border:none; color:#8aa7c5; font-weight:800; margin-right:6px; }
 
 /* desktop */
 @media (min-width:960px){
@@ -156,6 +159,8 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
         <div class="slides"><div class="slide show" id="slideA"></div><div class="slide" id="slideB"></div></div>
         <div class="overlay">
           <div>
+            <h2>비공식 파트너 프로그램<br/>고객 감사 쿠폰</h2>
+            <p>선호도 체크하고 퀴즈도 풀고 쿠폰 받아가세요</p>
           </div>
         </div>
       </div>
@@ -185,7 +190,7 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
   <div class="nav-item" data-type="coupon"><div class="nav-icon">💸</div><div class="nav-label">쿠폰</div></div>
 </nav>
 
-<!-- 가입/완료/선호도 -->
+<!-- 가입/완료 -->
 <div id="joinModal" class="modal"><div class="modal-box">
   <div class="modal-title">회원가입 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('joinModal')">✕</span></div>
   <form id="joinForm" class="form">
@@ -203,22 +208,32 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
   <p style="color:#d7dee6;margin:10px 0 16px">쿠폰을 받으시려면 파트너 사이트 가입이 필요합니다</p>
   <a href="https://HCASINO2.COM" target="_blank" rel="noopener" style="display:inline-block;font-weight:900;color:#43b0ff;text-decoration:none;margin:2px 0 8px">HCASINO2.COM</a>
   <div style="color:#ffd166;font-weight:900;margin-bottom:18px">추천코드: MBC</div>
-  <button class="btn-primary" onclick="gotoPreference()">가입 완료! 선호도 체크하기</button>
-</div></div>
-
-<div id="prefModal" class="modal"><div class="modal-box">
-  <div class="modal-title">선호도 체크 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('prefModal')">✕</span></div>
-  <div class="chips" id="prefChips">
-    <div class="chip">스포츠</div><div class="chip">카지노</div><div class="chip">슬롯</div><div class="chip">이벤트/쿠폰</div><div class="chip">VIP 서비스</div>
-  </div>
-  <button class="btn-primary" style="margin-top:16px" onclick="savePreference()">선호도 저장</button>
-  <div id="prefToast" style="display:none;margin-top:10px;color:#8ee887;font-weight:800">저장되었습니다!</div>
+  <button class="btn-primary" onclick="openSurvey()">가입 완료! 선호도 체크하기</button>
 </div></div>
 
 <div id="loginModal" class="modal"><div class="modal-box">
   <div class="modal-title">로그인 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('loginModal')">✕</span></div>
   <div style="color:#aab6c8">로그인 페이지 준비 중입니다.</div>
 </div></div>
+
+<!-- ===== 설문(연계페이지) ===== -->
+<section id="survey" class="survey" aria-hidden="true">
+  <div class="sv-head">
+    <button class="btn-back" id="svBack" onclick="svPrev()" aria-label="이전">←</button>
+    <div class="sv-title">설문 질문</div>
+    <div class="sv-step" id="svStep">1 / 9</div>
+  </div>
+  <div class="sv-body">
+    <div class="qbox">
+      <div class="qno" id="qNo">1.</div>
+      <div class="qtitle" id="qTitle">질문</div>
+      <div class="field" id="qField"></div>
+    </div>
+  </div>
+  <div class="sv-foot">
+    <button id="svNext" class="btn-next" onclick="svNext()">다음</button>
+  </div>
+</section>
 
 <script>
 /* 높이 보정 */
@@ -234,7 +249,7 @@ function fitBars(){
 }
 addEventListener('load',fitBars); addEventListener('resize',fitBars);
 
-/* VIP 슬라이드 (너비 기반) */
+/* VIP 슬라이드 */
 function toggleHero(){
   const c=document.getElementById('container'); const b=document.getElementById('vipBtn');
   const open=!c.classList.contains('hero-active');
@@ -258,7 +273,7 @@ function populateSubbar(type){
     chip.onclick=()=>{
       row.querySelectorAll('.subchip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
-      if(txt.includes('선호도')) openModal('prefModal');
+      if(txt.includes('선호도')) openSurvey();
     };
     row.appendChild(chip);
   });
@@ -279,29 +294,26 @@ document.querySelectorAll('.bottom-nav .nav-item').forEach(el=>{
 function openModal(id){document.getElementById(id).classList.add('show');}
 function closeModal(id){document.getElementById(id).classList.remove('show');}
 document.getElementById('joinForm').addEventListener('submit',e=>{e.preventDefault();closeModal('joinModal');openModal('completeModal');});
-function gotoPreference(){closeModal('completeModal');openModal('prefModal');}
-document.querySelectorAll('#prefChips .chip').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('active')));
-function savePreference(){document.getElementById('prefToast').style.display='block';setTimeout(()=>closeModal('prefModal'),800);}
 
 /* 자산 로딩 (mobile → mobil 폴백) */
 (function assets(){
   const bases=['/7/mobile/assets/','/7/mobil/assets/'];
-  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r6a';});}
+  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r7';});}
   (async ()=>{
     let base=bases[0]; for(const b of bases){ if(await ok(b+'herom1.jpg')){ base=b; break; } }
     // logo
     const slot=document.getElementById('logoSlot'), logos=['logom.png','logom.jpg','logom.webp','logom.svg'];
-    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r6a'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
+    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r7'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
     // BIGM 슬라이드
-    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r6a');}
+    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r7');}
     initBigm(imgs.length?imgs:[
-      'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23161b22"/></svg>'
+      'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22480%22><rect width=%22100%%22 height=%22100%%22 fill=%22%23161b22%22/></svg>'
     ]);
     // 스몰4
-    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r6a')`;};
+    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r7')`;};
     setImg('p1','prom1.png'); setImg('p2','prom2.png'); setImg('p3','prom3.png'); setImg('p4','prom4.png');
     // 히어로
-    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r6a')`;};
+    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r7')`;};
     H('h1','herom1.jpg'); H('h2','herom2.jpg'); H('h3','herom3.jpg');
     fitBars();
   })();
@@ -309,11 +321,7 @@ function savePreference(){document.getElementById('prefToast').style.display='bl
 
 /* BIGM 크로스페이드 + slide1 클릭시 가입 모달 */
 let tm=null, ix=0, bigmEl=null;
-function updateBigmClick(){
-  if(!bigmEl) return;
-  if(ix===0){ bigmEl.classList.add('canJoin'); }
-  else      { bigmEl.classList.remove('canJoin'); }
-}
+function updateBigmClick(){ if(!bigmEl) return; if(ix===0){ bigmEl.classList.add('canJoin'); } else { bigmEl.classList.remove('canJoin'); } }
 function initBigm(imgs){
   const a=document.getElementById('slideA'), b=document.getElementById('slideB');
   bigmEl=document.getElementById('bigm');
@@ -328,6 +336,67 @@ function initBigm(imgs){
     updateBigmClick();
   }, 4000);
 }
+
+/* ===== 설문 로직 ===== */
+const SV = [
+  {t:'hcasino2.com 에서 쿠폰을 받으실 아이디', kind:'input', name:'id', ph:'아이디를 입력해주세요'},
+  {t:'hcasino2.com에서 가입할 때 기입한 전화번호', kind:'input', name:'phone', ph:'전화번호를 입력해주세요'},
+  {t:'주로 하시는 게임을 선택해 주세요', kind:'radio', name:'game', opts:['카지노','슬롯','토토','전부']},
+  {t:'보통 일주일에 게임을 위하여 충전하시는 횟수는?', kind:'radio', name:'freq', opts:['1~2회','3~4회','5~6회','그 이상']},
+  {t:'최근 7일간 플레이한 횟수', kind:'radio', name:'recent', opts:['하루','이틀','사흘','그 이상']},
+  {t:'이용하는 곳을 고를 때 중요하다고 생각하는 것은?', kind:'radio', name:'point', opts:['롤링','보너스','업체명성','담당 파트너']},
+  {t:'플레이어의 1회 환급금으로 가장 그럴듯한 금액은?', kind:'radio', name:'refund', opts:['50만원','100만원','300만원','그 이상']},
+  {t:'혹시 오늘 충전하실 계획이 있으신가요?', kind:'radio', name:'today', opts:['오늘 합니다','조금 고민중입니다','쿠폰은 언제쯤?']},
+  {t:'형님 있잖습니까?\n첫충전 금액의 보너스 50%,\n슬롯 요율 3%,에\n담당 보너스 당일 충전횟수마다 +1만 보너스로\n준비해봤습니다.\n\n자리 한번 빛내주시겠습니까?', kind:'radio', name:'final', opts:['생각해볼께요','OK']}
+];
+let si = 0;
+function openSurvey(){
+  closeModal('completeModal');
+  const el=document.getElementById('survey'); el.classList.add('show'); document.body.style.overflow='hidden'; renderQ();
+}
+function closeSurvey(){
+  document.getElementById('survey').classList.remove('show'); document.body.style.overflow='';
+}
+function renderQ(){
+  const q=SV[si];
+  document.getElementById('svStep').textContent=`${si+1} / ${SV.length}`;
+  document.getElementById('qNo').textContent=`${si+1}.`;
+  document.getElementById('qTitle').innerHTML=q.t.replace(/\n/g,'<br/>');
+  const field=document.getElementById('qField'); field.innerHTML='';
+  if(q.kind==='input'){
+    const inp=document.createElement('input'); inp.className='input2'; inp.name=q.name; inp.placeholder=q.ph||''; inp.required=true;
+    field.appendChild(inp);
+  }else{
+    q.opts.forEach((txt,i)=>{
+      const lab=document.createElement('label'); lab.className='radio';
+      const r=document.createElement('input'); r.type='radio'; r.name=q.name; r.value=txt;
+      lab.appendChild(r);
+      const sp=document.createElement('span'); sp.textContent=`${i+1}. ${txt}`;
+      lab.appendChild(sp);
+      field.appendChild(lab);
+    });
+  }
+  document.getElementById('svBack').style.visibility = (si===0)?'hidden':'visible';
+  document.getElementById('svNext').textContent = (si===SV.length-1)?'제출':'다음';
+}
+function svNext(){
+  const q=SV[si]; const field=document.getElementById('qField');
+  let ok=false;
+  if(q.kind==='input'){
+    const v=field.querySelector('input')?.value.trim(); ok=!!v;
+  }else{
+    ok=!!field.querySelector('input[type="radio"]:checked');
+  }
+  if(!ok){ document.getElementById('svNext').disabled=true; setTimeout(()=>{document.getElementById('svNext').disabled=false;},400); return; }
+  if(si===SV.length-1){
+    // submit
+    closeSurvey();
+    alert('감사합니다! 응답이 제출되었습니다.');
+    return;
+  }
+  si++; renderQ();
+}
+function svPrev(){ if(si>0){ si--; renderQ(); } }
 </script>
 </body>
 </html>
