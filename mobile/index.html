@@ -3,61 +3,96 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>EURO247 · v40 (Mobile/PC Responsive)</title>
+<title>EURO247 · v40-fix</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#0f1215;color:#fff;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;background:#0f1215;color:#fff}
 :root{--contentShift:33.333%;--heroW:66.666%;--slideDur:0.9s}
-/* header */
-header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;border-bottom:1px solid #2a2f36;padding:14px 16px;display:flex;align-items:center;gap:10px}
+
+/* 상단 로고 바 */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;
+  border-bottom:1px solid #2a2f36;padding:14px 16px;display:flex;align-items:center;gap:10px}
 .logo{font-size:24px;font-weight:900;color:#0ea5e9;display:flex;align-items:center;gap:10px}
 .logo img{height:28px;display:block}
-/* bar */
-.member-bar{position:fixed;top:56px;left:0;right:0;z-index:1100;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:12px 16px;background:#171a1f;border-bottom:1px solid #2a2f36}
+
+/* 가입/로그인/VIP 버튼 바 */
+.member-bar{position:fixed;left:0;right:0;z-index:1100;display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:8px;padding:12px 16px;background:#171a1f;border-bottom:1px solid #2a2f36}
 .member-bar button{padding:14px;border-radius:10px;border:none;font-weight:800;font-size:14px;cursor:pointer;color:#fff}
 .btn-join{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)}
 .btn-login{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%)}
 .btn-vip{background:linear-gradient(135deg,#4facfe 0%,#00f2fe 100%)}
-.btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);border:2px solid rgba(0,255,170,.55);transition:box-shadow .4s ease,border .4s ease;animation:vipPulse 2.4s ease-in-out infinite}
-@keyframes vipPulse{0%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45);border-color:rgba(0,255,170,.75)}100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15);border-color:rgba(0,255,170,.35)}}
-/* layout */
-.container{position:fixed;top:126px;left:0;right:0;bottom:70px;display:flex;overflow:hidden}
-.content-area{position:relative;flex:1 1 auto;padding:16px;overflow-y:auto;transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1)}
+.btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);
+  border:2px solid rgba(0,255,170,.55);animation:vipPulse 2.4s ease-in-out infinite}
+@keyframes vipPulse{0%,100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15)}
+  50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45)}}
+
+/* 본문 컨테이너(초기 접힘/과스크롤 방지: JS로 top/height 계산) */
+.container{position:fixed;left:0;right:0;overflow:hidden;display:flex}
+.content-area{position:relative;flex:1 1 auto;padding:12px 16px;overflow:auto;
+  transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1)}
 .content-area::-webkit-scrollbar{display:none}
-.hero-area{flex:0 0 var(--heroW);max-width:var(--heroW);padding:16px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;transform:translateX(100%);transition:transform var(--slideDur) cubic-bezier(.22,.61,.36,1);pointer-events:none}
-.hero-area::-webkit-scrollbar{display:none}
+
+/* 히어로 패널 (닫힘 상태에서 폭 0으로 → 메인이 꽉 차 보임) */
+.hero-area{
+  flex: 0 0 var(--heroW);
+  max-width: var(--heroW);
+  padding:12px 16px;
+  display:flex;flex-direction:column;gap:10px;
+  overflow:auto;
+  transform: translateX(100%);
+  transition:
+    transform var(--slideDur) cubic-bezier(.22,.61,.36,1),
+    flex-basis var(--slideDur),
+    max-width var(--slideDur);
+  pointer-events:none;
+}
+.container:not(.hero-active) .hero-area{flex-basis:0;max-width:0}
 .container.hero-active .content-area{transform:translateX(calc(-1 * var(--contentShift)))}
 .container.hero-active .hero-area{transform:translateX(0);pointer-events:auto}
-/* bigm slider */
-.bigm{position:relative;border-radius:16px;min-height:240px;margin-bottom:16px;overflow:hidden;color:#000}
+.hero-area::-webkit-scrollbar{display:none}
+
+/* BIGM(39:24) 슬라이더 */
+.bigm{position:relative;border-radius:16px;overflow:hidden;color:#000;aspect-ratio:39/24;background:#222}
 .bigm .slides{position:absolute;inset:0}
 .bigm .slide{position:absolute;inset:0;background-position:center;background-size:cover;opacity:0;transition:opacity .8s ease}
 .bigm .slide.show{opacity:1}
-.bigm .overlay{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:24px 20px}
-.bigm h2{font-size:22px;font-weight:900;line-height:1.3;margin-bottom:12px}
-.bigm p{font-size:14px;opacity:.95;margin-bottom:16px}
-.bigm .cta{background:#fff;color:#000;border:none;padding:12px 28px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;align-self:flex-start}
-/* promos */
-.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.promo-card{border-radius:14px;min-height:160px;display:block;position:relative;overflow:hidden;text-decoration:none;color:#fff;background:#222830;background-position:center;background-size:cover}
-.promo-card .cap{position:absolute;left:10px;bottom:10px;font-weight:800;font-size:14px;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.8)}
-/* hero cards */
-.hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;min-height:220px;position:relative;text-decoration:none;color:#fff;display:block;background-position:center;background-size:cover;opacity:0;transform:translateX(100px);transition:opacity .6s,transform .6s}
+.bigm .overlay{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:20px}
+.bigm h2{font-size:20px;font-weight:900;line-height:1.3}
+.bigm p{font-size:13px;opacity:.95;margin-top:8px}
+.bigm .cta{margin-top:auto;background:#fff;color:#000;border:none;padding:10px 22px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer}
+
+/* 프로모션 4소켓(18:22) */
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.promo-card{border-radius:14px;display:block;position:relative;overflow:hidden;text-decoration:none;color:#fff;
+  background:#222830;background-position:center;background-size:cover;aspect-ratio:18/22}
+.promo-card .cap{position:absolute;left:10px;bottom:10px;font-weight:800;font-size:13px;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+
+/* 히어로 카드(39:24) */
+.hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;position:relative;
+  text-decoration:none;color:#fff;display:block;background-position:center;background-size:cover;opacity:0;
+  transform:translateX(100px);transition:opacity .6s,transform .6s;aspect-ratio:39/24}
 .container.hero-active .hero-card:nth-child(1){opacity:1;transform:translateX(0);transition-delay:.45s}
 .container.hero-active .hero-card:nth-child(2){opacity:1;transform:translateX(0);transition-delay:.85s}
 .container.hero-active .hero-card:nth-child(3){opacity:1;transform:translateX(0);transition-delay:1.25s}
-.hero-info{position:absolute;left:0;right:0;bottom:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
+.hero-info{position:absolute;left:0;right:0;bottom:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
 .hero-name{font-size:12px;color:#bbb;margin-bottom:4px}
 .hero-title{font-size:14px;font-weight:800}
-/* bottom nav & sheet */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#13161B;border-top:1px solid #2a2f36;display:flex;justify-content:space-around;padding:8px 0 12px;z-index:300}
+
+/* 하단 탭바 */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#13161B;border-top:1px solid #2a2f36;
+  display:flex;justify-content:space-around;padding:8px 0 12px;z-index:300}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;color:#8892a6;padding:4px}
 .nav-item.active{color:#0ea5e9}
-.nav-icon{font-size:24px}
+.nav-icon{font-size:22px}
 .nav-label{font-size:11px;font-weight:600}
-.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:saturate(60%) blur(2px);display:none;z-index:250}
-.sheet{position:fixed;left:0;right:0;bottom:-60vh;height:58vh;background:#0f141a;border-top:1px solid #303845;border-radius:16px 16px 0 0;z-index:260;box-shadow:0 -10px 30px rgba(0,0,0,.45);transition:transform .45s cubic-bezier(.22,.61,.36,1);transform:translateY(100%)}
+
+/* 바텀시트 */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;z-index:250}
+.sheet{position:fixed;left:0;right:0;bottom:-60vh;height:58vh;background:#0f141a;border-top:1px solid #303845;
+  border-radius:16px 16px 0 0;z-index:260;box-shadow:0 -10px 30px rgba(0,0,0,.45);transition:transform .45s cubic-bezier(.22,.61,.36,1);
+  transform:translateY(100%)}
 .sheet.show{transform:translateY(0)}
 .sheet-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #263040}
 .sheet-title{font-weight:900}
@@ -66,7 +101,8 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 .subgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .subbtn{padding:12px;border-radius:12px;text-align:center;background:#121b24;color:#d7e7ff;text-decoration:none;font-weight:800;border:1px solid #203040}
 .subbtn:active{transform:scale(.98)}
-/* modals (join->complete->pref) */
+
+/* 모달(가입→완료(HCASINO2/MBC)→선호도) */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:320}
 .modal.show{display:flex}
 .modal-box{background:#12161c;border:1px solid #2a2f36;border-radius:14px;padding:20px;width:90%;max-width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 10px 30px rgba(0,0,0,.45)}
@@ -77,29 +113,27 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{padding:10px 12px;border-radius:999px;border:1px solid #2a2f36;background:#121820;color:#cfe7ff;font-weight:700;font-size:12px;cursor:pointer}
 .chip.active{background:#0ea5e9;color:#002233;border-color:#35c1ff}
-/* desktop */
+
+/* 데스크톱 */
 @media (min-width:960px){
   :root{--contentShift:40%;--heroW:60%}
   .member-bar{grid-template-columns:180px 180px 180px;justify-content:center}
-  .content-area{padding:24px}
-  .hero-area{padding:24px}
 }
 </style>
 </head>
 <body>
-<header>
-  <div class="logo" id="logoSlot">EURO247</div>
-</header>
+<header id="hdr"><div class="logo" id="logoSlot">EURO247</div></header>
 
-<div class="member-bar">
+<div id="mbar" class="member-bar">
   <button class="btn-join" onclick="openModal('joinModal')">가입</button>
   <button class="btn-login" onclick="openModal('loginModal')">로그인</button>
   <button id="vipBtn" class="btn-vip" onclick="toggleHero()">VIP 호출</button>
 </div>
 
+<!-- 본문: top/height는 JS로 계산해 초기 접힘 제거 -->
 <div id="container" class="container">
   <section class="content-area">
-    <!-- BIGM SLIDER -->
+    <!-- BIGM 슬라이더 -->
     <div class="bigm" id="bigm">
       <div class="slides">
         <div class="slide show" id="slideA"></div>
@@ -113,7 +147,8 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
         <button class="cta" onclick="openModal('joinModal')">쿠폰받기</button>
       </div>
     </div>
-    <!-- PROMOS -->
+
+    <!-- 프로모션 4소켓 -->
     <div class="promo-grid">
       <a id="p1" class="promo-card" href="#"><span class="cap">프로모션 1</span></a>
       <a id="p2" class="promo-card" href="#"><span class="cap">프로모션 2</span></a>
@@ -122,7 +157,7 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
     </div>
   </section>
 
-  <!-- HERO -->
+  <!-- 히어로 카드 -->
   <aside class="hero-area">
     <a id="h1" class="hero-card" href="#"><div class="hero-info"><div class="hero-name">Jayme Sun (제이미 선)</div><div class="hero-title">Executive Host 🔷</div></div></a>
     <a id="h2" class="hero-card" href="#"><div class="hero-info"><div class="hero-name">Tom Woo (탐 우)</div><div class="hero-title">Mid-level Host 📱</div></div></a>
@@ -130,95 +165,87 @@ header{position:fixed;top:0;left:0;right:0;z-index:1000;background:#13161B;borde
   </aside>
 </div>
 
-<!-- Bottom Nav -->
-<nav class="bottom-nav">
+<!-- 하단 탭 -->
+<nav id="bnav" class="bottom-nav">
   <div class="nav-item" data-type="home"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></div>
   <div class="nav-item" data-type="promo"><div class="nav-icon">🎁</div><div class="nav-label">프로모션</div></div>
   <div class="nav-item" data-type="partner"><div class="nav-icon">🎫</div><div class="nav-label">파트너</div></div>
   <div class="nav-item" data-type="coupon"><div class="nav-icon">💸</div><div class="nav-label">쿠폰</div></div>
 </nav>
 
-<!-- bottom sheet -->
+<!-- 바텀시트 -->
 <div id="sheetBackdrop" class="sheet-backdrop"></div>
 <div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-  <div class="sheet-header">
-    <div id="sheetTitle" class="sheet-title">메뉴</div>
-    <div class="sheet-close" onclick="closeSheet()">닫기 ✕</div>
-  </div>
+  <div class="sheet-header"><div id="sheetTitle" class="sheet-title">메뉴</div>
+    <div class="sheet-close" onclick="closeSheet()">닫기 ✕</div></div>
   <div id="sheetContent" class="sheet-content"></div>
 </div>
 
-<!-- Join / Complete / Preference -->
-<div id="joinModal" class="modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-title">회원가입 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('joinModal')">✕</span></div>
-    <form id="joinForm" class="form">
-      <label>아이디<input class="input" name="user_id" placeholder="아이디를 입력하세요" required></label>
-      <label>성함<input class="input" name="name" placeholder="성함을 입력하세요" required></label>
-      <label>비밀번호<input class="input" type="password" name="pw" placeholder="비밀번호를 입력하세요" required></label>
-      <label>연락처<input class="input" name="phone" placeholder="연락처를 입력하세요" required></label>
-      <button class="btn-primary" type="submit">회원가입</button>
-    </form>
-  </div>
-</div>
+<!-- 가입 / 완료 / 선호도 -->
+<div id="joinModal" class="modal"><div class="modal-box">
+  <div class="modal-title">회원가입 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('joinModal')">✕</span></div>
+  <form id="joinForm" class="form">
+    <label>아이디<input class="input" name="user_id" placeholder="아이디를 입력하세요" required></label>
+    <label>성함<input class="input" name="name" placeholder="성함을 입력하세요" required></label>
+    <label>비밀번호<input class="input" type="password" name="pw" placeholder="비밀번호를 입력하세요" required></label>
+    <label>연락처<input class="input" name="phone" placeholder="연락처를 입력하세요" required></label>
+    <button class="btn-primary" type="submit">회원가입</button>
+  </form>
+</div></div>
 
-<div id="completeModal" class="modal" role="dialog" aria-modal="true">
-  <div class="modal-box" style="text-align:center">
-    <div class="modal-title" style="justify-content:center">🎉 가입 완료! <span style="margin-left:auto;cursor:pointer" onclick="closeModal('completeModal')">✕</span></div>
-    <p style="color:#d7dee6;margin:10px 0 16px">쿠폰을 받으시려면 파트너 사이트 가입이 필요합니다</p>
-    <a id="partnerLink" href="https://HCASINO2.COM" rel="noopener" target="_blank" style="display:inline-block;font-weight:900;color:#43b0ff;text-decoration:none;margin:2px 0 8px">HCASINO2.COM</a>
-    <div style="color:#ffd166;font-weight:900;margin-bottom:18px">추천코드: <span id="refCode">MBC</span></div>
-    <button class="btn-primary" onclick="gotoPreference()">가입 완료! 선호도 체크하기</button>
-  </div>
-</div>
+<div id="completeModal" class="modal"><div class="modal-box" style="text-align:center">
+  <div class="modal-title" style="justify-content:center">🎉 가입 완료!
+    <span style="margin-left:auto;cursor:pointer" onclick="closeModal('completeModal')">✕</span></div>
+  <p style="color:#d7dee6;margin:10px 0 16px">쿠폰을 받으시려면 파트너 사이트 가입이 필요합니다</p>
+  <a href="https://HCASINO2.COM" target="_blank" rel="noopener"
+     style="display:inline-block;font-weight:900;color:#43b0ff;text-decoration:none;margin:2px 0 8px">HCASINO2.COM</a>
+  <div style="color:#ffd166;font-weight:900;margin-bottom:18px">추천코드: MBC</div>
+  <button class="btn-primary" onclick="gotoPreference()">가입 완료! 선호도 체크하기</button>
+</div></div>
 
-<div id="prefModal" class="modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-title">선호도 체크 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('prefModal')">✕</span></div>
-    <div style="color:#aab6c8;font-size:14px;margin-bottom:12px">주로 이용하실 서비스를 선택해주세요 (복수 선택 가능)</div>
-    <div class="chips" id="prefChips">
-      <div class="chip">스포츠</div>
-      <div class="chip">카지노</div>
-      <div class="chip">슬롯</div>
-      <div class="chip">이벤트/쿠폰</div>
-      <div class="chip">VIP 서비스</div>
-    </div>
-    <button class="btn-primary" style="margin-top:18px" onclick="savePreference()">선호도 저장</button>
-    <div id="prefToast" style="display:none;margin-top:10px;color:#8ee887;font-weight:800">저장되었습니다! 쿠폰 페이지로 이동합니다…</div>
+<div id="prefModal" class="modal"><div class="modal-box">
+  <div class="modal-title">선호도 체크 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('prefModal')">✕</span></div>
+  <div class="chips" id="prefChips">
+    <div class="chip">스포츠</div><div class="chip">카지노</div><div class="chip">슬롯</div><div class="chip">이벤트/쿠폰</div><div class="chip">VIP 서비스</div>
   </div>
-</div>
+  <button class="btn-primary" style="margin-top:16px" onclick="savePreference()">선호도 저장</button>
+  <div id="prefToast" style="display:none;margin-top:10px;color:#8ee887;font-weight:800">저장되었습니다!</div>
+</div></div>
 
-<div id="loginModal" class="modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-title">로그인 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('loginModal')">✕</span></div>
-    <div style="color:#aab6c8">로그인 페이지 준비 중입니다.</div>
-    <div class="modal-close" onclick="closeModal('loginModal')">닫기</div>
-  </div>
-</div>
+<div id="loginModal" class="modal"><div class="modal-box">
+  <div class="modal-title">로그인 <span style="margin-left:auto;cursor:pointer" onclick="closeModal('loginModal')">✕</span></div>
+  <div style="color:#aab6c8">로그인 페이지 준비 중입니다.</div>
+</div></div>
 
 <script>
-/* ===== VIP 슬라이드 열고닫기 ===== */
+/* 레이아웃 높이 계산 → 초기 접힘 제거 */
+function resizeLayout(){
+  const hdr=document.getElementById('hdr');
+  const bar=document.getElementById('mbar');
+  const nav=document.getElementById('bnav');
+  const cont=document.getElementById('container');
+  const top=hdr.offsetHeight+bar.offsetHeight;
+  const bottom=nav.offsetHeight;
+  cont.style.top=top+'px';
+  cont.style.height='calc(100dvh - '+(top+bottom)+'px)';
+}
+window.addEventListener('load',resizeLayout);
+window.addEventListener('resize',resizeLayout);
+
+/* VIP 슬라이드 토글 */
 function toggleHero(){
   const c=document.getElementById('container'); const b=document.getElementById('vipBtn');
   const open=!c.classList.contains('hero-active');
-  if(open){ c.classList.add('hero-active'); b&&b.classList.add('glow'); }
-  else{ c.classList.remove('hero-active'); b&&b.classList.remove('glow'); }
+  if(open){ c.classList.add('hero-active'); b.classList.add('glow'); }
+  else{ c.classList.remove('hero-active'); b.classList.remove('glow'); }
 }
-/* ===== 모달 ===== */
-function openModal(id){const m=document.getElementById(id); if(m) m.classList.add('show');}
-function closeModal(id){const m=document.getElementById(id); if(m) m.classList.remove('show');}
-document.getElementById('joinForm').addEventListener('submit',function(e){
-  e.preventDefault(); closeModal('joinModal'); openModal('completeModal');
-});
-function gotoPreference(){ closeModal('completeModal'); openModal('prefModal'); }
-document.querySelectorAll('#prefChips .chip').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('active')));
-function savePreference(){ document.getElementById('prefToast').style.display='block'; setTimeout(()=>closeModal('prefModal'), 1000); }
-/* ===== 바텀시트 ===== */
+
+/* 하단 바텀시트 */
 const SHEET_MAP={
-  home:{title:'홈',items:[{t:'메인',href:'#'},{t:'공지/안내',href:'#'},{t:'시간표',href:'#'},{t:'문의',href:'#'}]},
-  promo:{title:'프로모션',items:[{t:'첫입금/재충전',href:'#'},{t:'페이백/포인트',href:'#'},{t:'VIP 전용',href:'#'},{t:'올인이벤트',href:'#'}]},
-  partner:{title:'파트너',items:[{t:'VIP Host',href:'#'},{t:'Executive Host',href:'#'},{t:'Mystery Host',href:'#'},{t:'파트너 등록',href:'#'}]},
-  coupon:{title:'쿠폰',items:[{t:'선호도 체크',href:'#',on:'openPref'},{t:'퀴즈 쿠폰',href:'#'},{t:'돌발 쿠폰',href:'#'},{t:'내 쿠폰함',href:'#'}]},
+  home:{title:'홈',items:[{t:'메인',href:'#'},{t:'공지/안내',href:'#'},{t:'시간표',href:'#'}]},
+  promo:{title:'프로모션',items:[{t:'첫입금/재충전',href:'#'},{t:'페이백/포인트',href:'#'}]},
+  partner:{title:'파트너',items:[{t:'VIP Host',href:'#'},{t:'Executive Host',href:'#'}]},
+  coupon:{title:'쿠폰',items:[{t:'선호도 체크',href:'#',on:'openPref'},{t:'퀴즈 쿠폰',href:'#'}]},
 };
 function openSheet(type){
   const data=SHEET_MAP[type]; if(!data) return;
@@ -226,40 +253,59 @@ function openSheet(type){
   const title=document.getElementById('sheetTitle'), backdrop=document.getElementById('sheetBackdrop');
   title.textContent=data.title;
   cont.innerHTML='<div class="subgrid">'+data.items.map(it=>`<a class="subbtn" href="${it.href||'#'}" data-on="${it.on||''}">${it.t}</a>`).join('')+'</div>';
-  cont.querySelectorAll('a.subbtn').forEach(a=>{ if(a.dataset.on==='openPref'){ a.addEventListener('click',e=>{e.preventDefault(); closeSheet(); openModal('prefModal');}); } });
+  cont.querySelectorAll('a.subbtn').forEach(a=>{
+    if(a.dataset.on==='openPref'){ a.addEventListener('click',e=>{e.preventDefault(); closeSheet(); openModal('prefModal');}); }
+  });
   backdrop.style.display='block'; sheet.classList.add('show'); backdrop.onclick=closeSheet;
 }
-function closeSheet(){ const sheet=document.getElementById('sheet'), backdrop=document.getElementById('sheetBackdrop'); sheet.classList.remove('show'); setTimeout(()=>backdrop.style.display='none',300); }
-document.querySelectorAll('.bottom-nav .nav-item').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.remove('active')); el.classList.add('active'); openSheet(el.dataset.type);}));
-/* ===== 자산 경로 탐지 및 적용 (mobile 우선, mobil 폴백) ===== */
+function closeSheet(){ const sh=document.getElementById('sheet'), bd=document.getElementById('sheetBackdrop');
+  sh.classList.remove('show'); setTimeout(()=>bd.style.display='none',300); }
+document.querySelectorAll('.bottom-nav .nav-item').forEach(el=>el.addEventListener('click',()=>{
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active'); openSheet(el.dataset.type);
+}));
+
+/* 모달 흐름 */
+function openModal(id){document.getElementById(id).classList.add('show');}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+document.getElementById('joinForm').addEventListener('submit',function(e){
+  e.preventDefault(); closeModal('joinModal'); openModal('completeModal');
+});
+function gotoPreference(){ closeModal('completeModal'); openModal('prefModal'); }
+document.querySelectorAll('#prefChips .chip').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('active')));
+function savePreference(){ document.getElementById('prefToast').style.display='block';
+  setTimeout(()=>closeModal('prefModal'), 800); }
+
+/* 자산 자동 로딩 (mobile → mobil 폴백) */
 (function assetsResolver(){
   const bases=['/7/mobile/assets/','/7/mobil/assets/'];
-  function test(src){ return new Promise(res=>{ const img=new Image(); img.onload=()=>res(true); img.onerror=()=>res(false); img.src=src+'?v=40'; }); }
+  function test(src){ return new Promise(res=>{ const img=new Image();
+    img.onload=()=>res(true); img.onerror=()=>res(false); img.src=src+'?v=40f3'; }); }
   (async ()=>{
     let base=bases[0];
     for(const b of bases){ if(await test(b+'herom1.jpg')){ base=b; break; } }
+
     // 로고
-    const logoSlot=document.getElementById('logoSlot');
-    const logoCandidates=['logom.png','logom.jpg','logom.webp','logom.svg'];
-    for(const f of logoCandidates){
-      if(await test(base+f)){ const img=new Image(); img.src=base+f+'?v=40'; img.alt='logo'; img.style.height='28px'; logoSlot.innerHTML=''; logoSlot.appendChild(img); break; }
-    }
-    // hero & promos
-    const setBg=(id,f)=>{ const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40')`; };
+    const slot=document.getElementById('logoSlot'), logos=['logom.png','logom.jpg','logom.webp','logom.svg'];
+    for(const f of logos){ if(await test(base+f)){ const img=new Image();
+      img.src=base+f+'?v=40f3'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
+
+    // 배경 이미지
+    const setBg=(id,f)=>{ const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40f3')`; };
     setBg('h1','herom1.jpg'); setBg('h2','herom2.jpg'); setBg('h3','herom3.jpg');
     setBg('p1','prom1.png'); setBg('p2','prom2.png'); setBg('p3','prom3.png');
-    // bigm slider: bigm1.png, bigm2.png ... 자동 탐색
-    const bigmList=[];
-    for(let i=1;i<=8;i++){ const f=`bigm${i}.png`; if(await test(base+f)) bigmList.push(base+f+'?v=40'); }
-    initBigmSlider(bigmList.length?bigmList:[
-      'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="%23FDD835"/><stop offset="1" stop-color="%23F9A825"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>'
+
+    // BIGM 슬라이더(big m1~m8)
+    const list=[]; for(let i=1;i<=8;i++){ const f=`bigm${i}.png`; if(await test(base+f)) list.push(base+f+'?v=40f3'); }
+    initBigmSlider(list.length?list:[
+      'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23F9A825"/></svg>'
     ]);
   })();
 })();
-/* ===== BIGM 슬라이더 구현 (크로스페이드) ===== */
-let bigmTimer=null, bigmIdx=0, bigmImgs=[];
+
+/* BIGM 크로스페이드 */
+let bigmTimer=null,bigmIdx=0;
 function initBigmSlider(imgs){
-  bigmImgs=imgs; bigmIdx=0;
   const a=document.getElementById('slideA'), b=document.getElementById('slideB');
   a.style.backgroundImage=`url('${imgs[0]}')`; a.classList.add('show'); b.classList.remove('show');
   if(imgs.length<=1) return;
@@ -269,10 +315,7 @@ function initBigmSlider(imgs){
     const showA=a.classList.contains('show');
     const front=showA?a:b, back=showA?b:a;
     back.style.backgroundImage=`url('${imgs[next]}')`;
-    // fade
-    back.classList.add('show');
-    front.classList.remove('show');
-    bigmIdx=next;
+    back.classList.add('show'); front.classList.remove('show'); bigmIdx=next;
   }, 4000);
 }
 </script>
