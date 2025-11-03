@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-<title>EURO247 · v40 r4</title>
+<title>EURO247 · v40 r5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
@@ -32,18 +32,22 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .btn-vip.glow{position:relative;box-shadow:0 0 10px rgba(255,255,255,.45),0 0 28px rgba(0,255,170,.35);border:2px solid rgba(0,255,170,.55);animation:vipPulse 2.4s ease-in-out infinite}
 @keyframes vipPulse{0%,100%{box-shadow:0 0 6px rgba(0,255,170,.2),0 0 18px rgba(0,255,170,.15)}50%{box-shadow:0 0 12px rgba(255,255,255,.6),0 0 36px rgba(0,255,170,.45)}}
 
-/* ===== Main (새 구조: flex + column-gap) ===== */
+/* ===== Main (flex + column-gap) ===== */
 .container{
   position:fixed; left:0; right:0; overflow:hidden; display:flex;
   top:calc(var(--H-header) + var(--H-member));
   height:calc(100dvh - (var(--H-header) + var(--H-member) + var(--H-sub) + var(--H-bottom)));
   column-gap:0; transition:column-gap var(--slide);
+  padding:0 var(--side); /* 좌우 여백 통일 */
 }
+
+/* 왼쪽 컨텐츠 & 오른쪽 히어로 : 좌우 패딩 제거, 상/하만 */
+.content-area,.hero-area{ padding:12px 0; }
 
 /* 왼쪽 컨텐츠 */
 .content-area{
   flex:1 1 auto; transition:flex-basis var(--slide);
-  padding:12px var(--side); overflow:hidden;
+  overflow:hidden;
 }
 .viewport-grid{
   width:100%; height:100%; display:grid; gap:var(--gap); align-content:start;
@@ -68,7 +72,8 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 /* 오른쪽 히어로 (너비 애니메이션) */
 .hero-area{
   flex:0 0 0; max-width:0; transition:flex-basis var(--slide), max-width var(--slide);
-  padding:12px var(--side) 0 var(--side); display:flex; flex-direction:column; gap:10px; overflow:auto;
+  display:flex; flex-direction:column; gap:10px; overflow:auto;
+  background:#0f1215; min-height:100%; /* 바닥까지 꽉 채움 + 가림 */
 }
 .hero-area::-webkit-scrollbar{display:none}
 .hero-card{border-radius:12px;overflow:hidden;background:#141820;border:1px solid #262b33;position:relative;text-decoration:none;color:#fff;
@@ -100,6 +105,29 @@ header{position:fixed;left:0;right:0;top:0;z-index:1000;background:#13161b;borde
 .subrow::-webkit-scrollbar{display:none}
 .subchip{white-space:nowrap;padding:10px 12px;border-radius:999px;border:1px solid #2a3947;background:#121b24;color:#d7e7ff;font-weight:800;font-size:12px;cursor:pointer}
 .subchip.active{background:#0ea5e9;color:#002233;border-color:#35c1ff}
+
+/* ===== 모달(기본 숨김) ===== */
+.modal{
+  position:fixed; inset:0; display:none;
+  align-items:center; justify-content:center;
+  background:rgba(0,0,0,.55); backdrop-filter:blur(2px);
+  z-index:5000;
+}
+.modal.show{ display:flex; }
+.modal-box{
+  width:min(420px,calc(100vw - 48px));
+  background:#12161b; border:1px solid #2a2f3a; border-radius:16px;
+  padding:16px 16px 18px; color:#eaf2ff;
+}
+.form label{display:block; font-weight:800; color:#c9d5e5; margin-top:10px}
+.input{
+  width:100%; margin-top:6px; padding:12px 14px;
+  border-radius:12px; border:1px solid #2a3340; background:#0f141a; color:#eaf2ff
+}
+.btn-primary{
+  width:100%; margin-top:14px; padding:12px 16px; border-radius:12px; border:0;
+  background:#0ea5e9; color:#001018; font-weight:900; cursor:pointer
+}
 
 /* desktop */
 @media (min-width:960px){
@@ -258,22 +286,22 @@ function savePreference(){document.getElementById('prefToast').style.display='bl
 /* 자산 로딩 (mobile → mobil 폴백) */
 (function assets(){
   const bases=['/7/mobile/assets/','/7/mobil/assets/'];
-  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r4';});}
+  function ok(u){return new Promise(r=>{const i=new Image();i.onload=()=>r(true);i.onerror=()=>r(false);i.src=u+'?v=40r5';});}
   (async ()=>{
     let base=bases[0]; for(const b of bases){ if(await ok(b+'herom1.jpg')){ base=b; break; } }
     // logo
     const slot=document.getElementById('logoSlot'), logos=['logom.png','logom.jpg','logom.webp','logom.svg'];
-    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r4'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
+    for(const f of logos){ if(await ok(base+f)){ const img=new Image(); img.src=base+f+'?v=40r5'; img.alt='logo'; img.style.height='28px'; slot.innerHTML=''; slot.appendChild(img); break; } }
     // BIGM 슬라이드
-    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r4');}
+    const imgs=[]; for(let i=1;i<=8;i++){const f=`bigm${i}.png`; if(await ok(base+f)) imgs.push(base+f+'?v=40r5');}
     initBigm(imgs.length?imgs:[
       'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480"><rect width="100%" height="100%" fill="%23161b22"/></svg>'
     ]);
     // 스몰4
-    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r4')`;};
+    const setImg=(id,f)=>{const el=document.querySelector(`#${id} .img`); if(el) el.style.backgroundImage=`url('${base+f}?v=40r5')`;};
     setImg('p1','prom1.png'); setImg('p2','prom2.png'); setImg('p3','prom3.png'); setImg('p4','prom4.png');
     // 히어로
-    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r4')`;};
+    const H=(id,f)=>{const el=document.getElementById(id); if(el) el.style.backgroundImage=`url('${base+f}?v=40r5')`;};
     H('h1','herom1.jpg'); H('h2','herom2.jpg'); H('h3','herom3.jpg');
     fitBars();
   })();
