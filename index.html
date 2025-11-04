@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -280,13 +281,39 @@ aside{width:var(--sidebar-w);flex-shrink:0}
 <!-- Join -->
 <div id="joinModal" class="modal">
   <div class="win">
-    <div class="hd"><div class="title">가입창</div><button id="joinClose" class="close">✕</button></div>
-    <div class="mt-3 grid gap-3">
-      <input class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f36]" placeholder="아이디">
-      <input class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f36]" placeholder="성함">
-      <input class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f36]" placeholder="비밀번호" type="password">
-      <input class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f36]" placeholder="연락처">
-      <button id="joinSubmit" class="px-4 py-3 rounded-md bg-[#0ea5e9] text-white">가입완료</button>
+    <div class="hd"><div class="title">회원가입</div><button id="joinClose" class="close">X</button></div>
+
+    <div class="win p-3 grid gap-3">
+
+      <!-- 아이디 + 중복확인 -->
+      <div class="flex items-center gap-2">
+        <input name="user_id" class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f3b]" placeholder="아이디를 입력하세요">
+        <button type="button" id="dupUserBtn" class="px-2 py-1 rounded-md bg-[#121826] border border-[#2a2f3b] text-white">
+          중복확인
+        </button>
+        <span id="dupUserBadge" class="hidden text-xs px-2 py-0.5 rounded-full border"></span>
+      </div>
+
+      <!-- 성함 -->
+      <input name="full_name" class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f3b]" placeholder="성함을 입력하세요">
+
+      <!-- 비밀번호 -->
+      <input name="password" type="password" class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f3b]" placeholder="비밀번호를 입력하세요">
+
+      <!-- 비밀번호확인 (추가) -->
+      <input name="password_confirm" type="password" class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f3b]" placeholder="비밀번호를 다시 입력하세요">
+
+      <!-- 연락처 + 중복확인 -->
+      <div class="flex items-center gap-2">
+        <input name="phone" class="px-3 py-2 rounded-md bg-[#0f1318] border border-[#2a2f3b]" placeholder="연락처를 입력하세요">
+        <button type="button" id="dupPhoneBtn" class="px-2 py-1 rounded-md bg-[#121826] border border-[#2a2f3b] text-white">
+          중복확인
+        </button>
+        <span id="dupPhoneBadge" class="hidden text-xs px-2 py-0.5 rounded-full border"></span>
+      </div>
+
+      <!-- 제출 버튼 (기존 그대로 사용) -->
+      <button id="joinSubmit" class="px-4 py-2 rounded-md bg-[#0ea5e9] text-white">회원등록</button>
     </div>
   </div>
 </div>
