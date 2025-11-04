@@ -396,5 +396,46 @@ function svNext(){
 }
 function svPrev(){ if(si>0){ si--; renderQ(); } }
 </script>
+
+<script>
+(function(){
+  'use strict';
+  var CFG={WEB_APP:'https://script.google.com/macros/s/AKfycbz9zLfI-PI_JrMyDw4OqtNFWq74JLvkuA1ZllKKx1JoZdyBAITRzcHFP-wnUJdgD_r1nQ/exec',SHEET_ID:'1aYJkfM5-HmrBNN2FR5nCPGM4SoDaA8kKNhbKcW3bipU',TAB:'시트1',GVIZ:'https://docs.google.com/spreadsheets/d/1aYJkfM5-HmrBNN2FR5nCPGM4SoDaA8kKNhbKcW3bipU/gviz/tq?tqx=out:csv&sheet=%EC%8B%9C%ED%8A%B81'};
+  function $(s,r){return (r||document).querySelector(s)}; function val(el){return el&&el.value?String(el.value).trim():""};
+  function pill(input,ok,msg){var row=input.closest('.row,.grid,.flex,.group')||input.parentNode; var old=row&&row.querySelector?row.querySelector('.pill'):null; if(old) old.remove(); var s=document.createElement('span'); s.className='pill '+(ok?'ok':'bad'); s.textContent=msg; (row||document.body).appendChild(s); input.dataset.dupOk=ok?'1':'0'; s.style.marginLeft='8px'; s.style.padding='2px 8px'; s.style.borderRadius='999px'; s.style.fontSize='12px'; s.style.border='1px solid '+(ok?'#14532d':'#7f1d1d'); s.style.background=ok?'#052e16':'#3f1d1d'; s.style.color=ok?'#a7f3d0':'#fecaca'; }
+  function toast(m){try{var t=document.createElement('div');t.textContent=m;t.style.cssText='position:fixed;left:50%;top:18px;transform:translateX(-50%);background:#0f172a;color:#e5e7eb;padding:10px 12px;border-radius:10px;border:1px solid #334155;box-shadow:0 6px 20px rgba(0,0,0,.36);z-index:10000;font:13px/1.2 system-ui,Segoe UI,Roboto,Arial';document.body.appendChild(t);setTimeout(function(){t.remove()},2200)}catch(_){alert(m)}}
+  function samePw(a,b){return val(a)&&val(a)===val(b)}
+  async function postJSON(url,data){var r=await fetch(url,{method:'POST',mode:'cors',headers:{'Content-Type':'application/json; charset=utf-8'},body:JSON.stringify(data)});var txt=await r.text();var j=null;try{j=JSON.parse(txt)}catch(e){};return {ok:r.ok,status:r.status,statusText:r.statusText,text:txt,json:j};}
+  async function existsGas(field,value){try{var where={};where[field]=value;var r=await postJSON(CFG.WEB_APP,{action:'exists',sheetId:CFG.SHEET_ID,tab:CFG.TAB,where:where});if(r.ok&&r.json&&typeof r.json.exists!=='undefined')return !!r.json.exists}catch(e){}return null}
+  async function existsCsv(field,value){try{var resp=await fetch(CFG.GVIZ,{mode:'cors'});var text=await resp.text();if(!resp.ok)return null;var lines=text.split(/?
+/).filter(Boolean);if(!lines.length)return null;var header=lines.shift().split(',');var alias={user_id:['user_id','userid','id','username'],phone:['phone','tel','mobile','연락처']};var idx=header.indexOf(field);if(idx<0){for(var k of (alias[field]||[])){var j=header.indexOf(k);if(j>=0){idx=j;break}}if(idx<0)return null}var t=String(value).toLowerCase();for(var ln of lines){var cols=ln.split(',');if(cols[idx]&&String(cols[idx]).toLowerCase()===t)return true}return false}catch(e){return null}}
+  async function exists(field,value){var a=await existsGas(field,value);if(a===true||a===false)return a;return await existsCsv(field,value)}
+  function ensureBtn(afterEl,field){if(!afterEl||!afterEl.parentNode)return null;var b=afterEl.parentNode.querySelector('button[data-xbo3="'+field+'"]');if(b)return b; b=document.createElement('button');b.type='button';b.textContent='중복확인';b.setAttribute('data-xbo3',field);b.style.marginLeft='8px';b.style.padding='8px 10px';b.style.border='1px solid #334155';b.style.borderRadius='10px';b.style.background='#121826';b.style.color='#e5e7eb';b.style.cursor='pointer';afterEl.insertAdjacentElement('afterend',b);return b}
+  function ensurePw2(pw){if(!pw||!pw.parentNode)return null;var f=pw.form||pw.closest('form')||document;var ex=f.querySelector('input[name="password_confirm"]');if(ex)return ex;var i=document.createElement('input');i.type='password';i.name='password_confirm';i.placeholder='비밀번호를 다시 입력하세요';i.required=true;i.className=pw.className||'';pw.insertAdjacentElement('afterend',i);return i}
+  function detect(){var root=document.getElementById('joinModal')||document.querySelector("[id*='join'][class*='modal']")||document.querySelector("[id*='join']");if(!root)return null;var user=root.querySelector('[name="user_id"]')||root.querySelector('input[placeholder*="아이디"]');var name=root.querySelector('[name="full_name"]')||root.querySelector('input[placeholder*="성함"]');var pw=root.querySelector('[name="password"]')||root.querySelector('input[type="password"]');var phone=root.querySelector('[name="phone"]')||root.querySelector('input[placeholder*="연락처"]');var submit=root.querySelector('#joinSubmit')||Array.prototype.find.call(root.querySelectorAll('button'),function(b){return /회원등록|회원가입/i.test((b.textContent||'').trim())});return {root:root,user:user,name:name,pw:pw,phone:phone,submit:submit}}
+  function wire(){var d=detect(); if(!d||!d.user||!d.pw||!d.phone||!d.submit) return;
+    var pw2=ensurePw2(d.pw); var b1=ensureBtn(d.user,'user_id'); var b2=ensureBtn(d.phone,'phone');
+    if(d.user) d.user.placeholder='아이디를 입력하세요'; if(d.name) d.name.placeholder='성함을 입력하세요'; if(d.pw) d.pw.placeholder='비밀번호를 입력하세요'; if(pw2) pw2.placeholder='비밀번호를 다시 입력하세요'; if(d.phone) d.phone.placeholder='연락처를 입력하세요';
+    if(b1) b1.addEventListener('click',async function(){var v=val(d.user); if(!v) return pill(d.user,false,'값을 입력하세요'); b1.disabled=true; var prev=b1.textContent; b1.textContent='확인중…'; try{var ex=await exists('user_id',v); if(ex===true) pill(d.user,false,'이미 사용 중'); else if(ex===false) pill(d.user,true,'사용 가능'); else pill(d.user,false,'확인 실패');} finally {b1.disabled=false; b1.textContent=prev;}});
+    if(b2) b2.addEventListener('click',async function(){var v=val(d.phone); if(!v) return pill(d.phone,false,'값을 입력하세요'); b2.disabled=true; var prev=b2.textContent; b2.textContent='확인중…'; try{var ex=await exists('phone',v); if(ex===true) pill(d.phone,false,'이미 사용 중'); else if(ex===false) pill(d.phone,true,'사용 가능'); else pill(d.phone,false,'확인 실패');} finally {b2.disabled=false; b2.textContent=prev;}});
+    d.submit.addEventListener('click', async function(ev){
+      var ok=true; if(!(d.user && d.user.dataset.dupOk==='1')){ ok=false; pill(d.user,false,'중복확인 필요'); }
+      if(!(d.phone && d.phone.dataset.dupOk==='1')){ ok=false; pill(d.phone,false,'중복확인 필요'); }
+      if(!(pw2 && samePw(d.pw,pw2))){ ok=false; pill(pw2||d.pw,false,'비밀번호 불일치'); }
+      if(!ok){ ev.preventDefault(); ev.stopImmediatePropagation(); return toast('입력값을 확인해 주세요.'); }
+      ev.preventDefault(); ev.stopImmediatePropagation();
+      var btn=d.submit; btn.disabled=true; var prev=btn.textContent; btn.textContent='전송중…';
+      try{ var payload={action:'signup',sheetId:CFG.SHEET_ID,tab:CFG.TAB,data:{user_id:val(d.user),full_name:val(d.name)||'',password:val(d.pw),phone:val(d.phone),note:'inline patch'}};
+        var r=await postJSON(CFG.WEB_APP,payload);
+        if(r.ok){ toast('가입 완료! 시트 저장 성공'); var f=d.user.form||d.root.querySelector('form'); if(f) f.reset(); }
+        else{ toast('서버 오류: '+r.status+' '+r.statusText); console.error(r.text); }
+      }catch(e){ toast('요청 실패: '+e.message); }
+      finally{ btn.disabled=false; btn.textContent=prev; }
+    }, true);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', wire); else wire();
+})();
+</script>
+
 </body>
 </html>
